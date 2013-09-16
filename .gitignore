@@ -3,7 +3,7 @@ _ReSharper*
 bin
 !/tools/*/bin
 !/bin
-
+!/lib/*.dll
 obj
 
 .DS_Store
