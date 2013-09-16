@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Chaos.Mcm">
+      <HintPath>..\..\..\lib\Chaos.Mcm.dll</HintPath>
+    </Reference>
+    <Reference Include="Chaos.Portal">
+      <HintPath>..\..\..\lib\Chaos.Portal.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\..\tools\Moq.4.0.10827\NET40\Moq.dll</HintPath>
     </Reference>
@@ -38,6 +44,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

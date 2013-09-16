@@ -3,7 +3,11 @@
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using Object = Chaos.Mcm.Data.Dto.Object;
+    using System.Xml.Linq;
+    using Mcm.Data.Dto;
+    using System.Linq;
+    using Larmfm.View;
+    using Object = Mcm.Data.Dto.Object;
 
     [TestFixture]
     public class SearchViewTest
@@ -47,9 +51,7 @@
                             new Metadata
                                 {
                                     MetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000"),
-                                    MetadataXml =
-                                        XDocument.Parse(
-                                            "<Larm.Program><PublicationDateTime>2012-02-21T16:03:00</PublicationDateTime><PublicationEndDateTime>2012-02-22T00:03:00</PublicationEndDateTime><PublicationChannel>DR P7 Mix</PublicationChannel><Title>P7 MIX</Title><Abstract></Abstract><Description>Musik med pop og sjæl. </Description><Publisher></Publisher><Subjects /><Contributors></Contributors><Creators><Creator><Name></Name><RoleName></RoleName><RoleID></RoleID></Creator></Creators><Locations /><Identifiers><DR.ProductionNumber></DR.ProductionNumber><DR.ArchiveNumber></DR.ArchiveNumber><SB.DomsID>c431cb1d-081a-47de-a7d4-cd4275a7063a</SB.DomsID></Identifiers></Larm.Program>")
+                                    MetadataXml        = XDocument.Parse("<Larm.Program><PublicationDateTime>2012-02-21T16:03:00</PublicationDateTime><PublicationEndDateTime>2012-02-22T00:03:00</PublicationEndDateTime><PublicationChannel>DR P7 Mix</PublicationChannel><Title>P7 MIX</Title><Abstract></Abstract><Description>Musik med pop og sjæl. </Description><Publisher></Publisher><Subjects /><Contributors></Contributors><Creators><Creator><Name></Name><RoleName></RoleName><RoleID></RoleID></Creator></Creators><Locations /><Identifiers><DR.ProductionNumber></DR.ProductionNumber><DR.ArchiveNumber></DR.ArchiveNumber><SB.DomsID>c431cb1d-081a-47de-a7d4-cd4275a7063a</SB.DomsID></Identifiers></Larm.Program>")
                                 }
                         }
                 };

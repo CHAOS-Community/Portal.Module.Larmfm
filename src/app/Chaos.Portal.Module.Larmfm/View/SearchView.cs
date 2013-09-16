@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using CHAOS.Serialization;
+using Chaos.Portal.Core.Indexing.View;
 
 namespace Chaos.Portal.Module.Larmfm.View
 {
     public class SearchView : AView
     {
-        private static int ProgramObjectId = 24;
-        private static Guid ProgramMetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000");
+        private const int ProgramObjectId = 24;
+
+        private static readonly Guid ProgramMetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000");
 
         public SearchView() : base("Search")
         {
@@ -14,7 +18,7 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         public override IList<IViewData> Index(object objectsToIndex)
         {
-            var obj = objectsToIndex as Object;
+            var obj = objectsToIndex as Mcm.Data.Dto.Object;
 
             if(obj == null) new List<IViewData>();
             if(obj.ObjectTypeID != ProgramObjectId) new List<IViewData>();
