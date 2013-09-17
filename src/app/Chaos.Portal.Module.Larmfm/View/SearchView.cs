@@ -8,16 +8,18 @@ using System.Xml.Linq;
 
 namespace Chaos.Portal.Module.Larmfm.View
 {
+    using CHAOS;
+    using CHAOS.Extensions;
+
     public class SearchView : AView
     {
-        private const int RadioObjectId = 24;
-        private const int ScheduleObjectId = 39;
+        private const int RadioObjectId    = 24;
+        private const int ScheduleObjectId = 86;
 
-        private static readonly Guid ProgramMetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000");
-        private static readonly Guid ScheduleMetadataSchemaGuid = Guid.Parse("70c26faf-b1ee-41e8-b916-a5a16b25ca69");
+        private static readonly Guid ProgramMetadataSchemaGuid  = Guid.Parse("00000000-0000-0000-0000-0000df820000");
+        private static readonly Guid ScheduleMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
 
-        public SearchView()
-            : base("Search")
+        public SearchView() : base("Search")
         {
         }
 
@@ -44,12 +46,14 @@ namespace Chaos.Portal.Module.Larmfm.View
                         var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ScheduleMetadataSchemaGuid);
                         if (metadata == null) return new List<IViewData>();
                         var title = GetMetadata(metadata.MetadataXml, "Title");
-                        data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
-                        data.Type = "Schedule";
+                        data.Title    = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
+                        data.Type     = "Schedule";
                         data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
-
+                        
                         break;
                     }
+                default :
+                    return new List<IViewData>();
             }
 
             data.Id = obj.Guid.ToString();
@@ -68,7 +72,8 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
         {
-            query.Query = string.Format("(Title:\"{0}\"^5)OR(FreeText:{0})", query.Query);
+            if (query.Query != "*:*") 
+                query.Query = string.Format("(Title:{0}*^5)OR(FreeText:{0}*)", query.Query);
 
             return Query<SearchViewData>(query);
         }
@@ -79,8 +84,11 @@ namespace Chaos.Portal.Module.Larmfm.View
         public IEnumerable<KeyValuePair<string, string>> GetIndexableFields()
         {
             yield return UniqueIdentifier;
+            
             yield return new KeyValuePair<string, string>("Title", Title);
             yield return new KeyValuePair<string, string>("Type", Type);
+            
+            if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText);
         }
 
         public KeyValuePair<string, string> UniqueIdentifier { get { return new KeyValuePair<string, string>("Id", Id); } }
@@ -95,7 +103,6 @@ namespace Chaos.Portal.Module.Larmfm.View
         [Serialize]
         public string Type { get; set; }
 
-        [Serialize]
         public string FreeText { get; set; }
     }
 }

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CHAOS, Version=1.0.4985.35372, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
+    </Reference>
     <Reference Include="Chaos.Mcm">
       <HintPath>..\..\..\lib\Chaos.Mcm.dll</HintPath>
     </Reference>

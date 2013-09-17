@@ -2,6 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+
+    using CHAOS;
+    using CHAOS.Extensions;
+
     using NUnit.Framework;
     using System.Xml.Linq;
     using Mcm.Data.Dto;
@@ -46,9 +50,10 @@
         {
             var data = new SearchViewData
                 {
-                    Id = "00000000-0000-0000-0000-000000000001",
-                    Title = "P7 MIX",
-                    Type = "Radio"
+                    Id       = "00000000-0000-0000-0000-000000000001",
+                    Title    = "P7 MIX",
+                    Type     = "Radio",
+                    FreeText = "test text"
                 };
 
             var result = data.GetIndexableFields().ToList();
@@ -56,6 +61,7 @@
             Assert.That(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), Is.True);
             Assert.That(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), Is.True);
             Assert.That(result.Any(item => item.Key == "Type" && item.Value == "Radio"), Is.True);
+            Assert.That(result.First(item => item.Key == "FreeText").Value, Is.EqualTo("test text"));
         }
 
         private static Object Make_Radio_Object()
@@ -80,12 +86,12 @@
             return new Object
             {
                 Guid = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                ObjectTypeID = 39,
+                ObjectTypeID = 86,
                 Metadatas = new List<Metadata>
                         {
                             new Metadata
                                 {
-                                    MetadataSchemaGuid = Guid.Parse("70c26faf-b1ee-41e8-b916-a5a16b25ca69"),
+                                    MetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid(),
                                     MetadataXml        = XDocument.Parse(@"<Larm.HvideProgram><Titel></Titel><Filename>A-1967-04-01-P-0042.pdf</Filename><AllText>Test data content.</AllText><Date>1967-04-01T00:00:00</Date><Type>Program</Type></Larm.HvideProgram>")
                                 }
                         }
