@@ -35,6 +35,11 @@ namespace Chaos.Portal.Module.Larmfm.View
 
             return new[] {data};
         }
+
+        public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
+        {
+            return Query<SearchViewData>(query);
+        }
     }
 
     public class SearchViewData : IViewData

@@ -1,19 +1,26 @@
 ﻿namespace Chaos.Portal.Module.Larmfm
 {
+    using System.Collections.Generic;
     using System.Configuration;
+    using System.Linq;
 
     using CHAOS.Net;
 
+    using Chaos.Mcm;
+    using Chaos.Portal.Core;
+    using Chaos.Portal.Core.Exceptions;
+    using Chaos.Portal.Core.Extension;
     using Chaos.Portal.Core.Indexing.Solr;
+    using Chaos.Portal.Core.Module;
     using Chaos.Portal.Module.Larmfm.View;
 
-    public class LarmModule : Mcm.McmModule
+    public class LarmModule : McmModule
     {
         #region Implementation of IModule
 
         protected override Core.Indexing.View.IView CreateObjectView()
         {
-            return new View.ObjectView(PermissionManager);
+            return new ObjectView(PermissionManager);
         }
 
         public override void Load(Core.IPortalApplication portalApplication)
@@ -23,7 +30,7 @@
             var searchView = new SearchView();
             searchView.WithPortalApplication(portalApplication);
             searchView.WithCache(portalApplication.Cache);
-            searchView.WithIndex(new SolrCore(new HttpConnection(ConfigurationManager.AppSettings["SOLR_URL"]), "larm-search" ));
+            searchView.WithIndex(new SolrCore(new HttpConnection(ConfigurationManager.AppSettings["SOLR_URL"]), "larm-search"));
 
             portalApplication.ViewManager.AddView(searchView);
         }

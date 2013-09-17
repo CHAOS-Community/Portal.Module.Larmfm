@@ -16,7 +16,7 @@
     {
         #region Initialization
 
-        public ObjectView(IPermissionManager permissionManager) : base("Object")
+        public ObjectView(IPermissionManager permissionManager) : base("Larm-Object")
         {
             PermissionManager = permissionManager;
         }

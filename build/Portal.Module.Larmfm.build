@@ -25,7 +25,7 @@
 		</librarypath>
 		
 		<inputassemblies>
-      			<include name="..\src\app\Chaos.Portal.Module.Larmfm\bin\Debug" />
+      			<include name="..\src\app\Chaos.Portal.Module.Larmfm\bin\Release\Chaos.Portal.Module.Larmfm.dll" />
 			<include name="..\lib\Chaos.Mcm.dll" />
 		</inputassemblies>
 		
