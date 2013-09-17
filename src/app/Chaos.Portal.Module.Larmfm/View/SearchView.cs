@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using CHAOS.Serialization;
 using Chaos.Portal.Core.Indexing.View;
+using Chaos.Mcm.Data.Dto;
+using System.Xml.Linq;
 
 namespace Chaos.Portal.Module.Larmfm.View
 {
     public class SearchView : AView
     {
-        private const int ProgramObjectId = 24;
+        private const int RadioObjectId = 24;
+        private const int ScheduleObjectId = 39;
 
         private static readonly Guid ProgramMetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000");
+        private static readonly Guid ScheduleMetadataSchemaGuid = Guid.Parse("70c26faf-b1ee-41e8-b916-a5a16b25ca69");
 
-        public SearchView() : base("Search")
+        public SearchView()
+            : base("Search")
         {
         }
 
@@ -20,24 +25,51 @@ namespace Chaos.Portal.Module.Larmfm.View
         {
             var obj = objectsToIndex as Mcm.Data.Dto.Object;
 
-            if(obj == null) new List<IViewData>();
-            if(obj.ObjectTypeID != ProgramObjectId) new List<IViewData>();
+            if (obj == null) return new List<IViewData>();
 
-            var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
+            var data = new SearchViewData();
 
-            if (metadata == null) new List<IViewData>();
+            switch (obj.ObjectTypeID)
+            {
+                case RadioObjectId:
+                    {
+                        var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
+                        if (metadata == null) return new List<IViewData>();
+                        data.Title = GetMetadata(metadata.MetadataXml, "Title");
+                        data.Type = "Radio";
+                        break;
+                    }
+                case ScheduleObjectId:
+                    {
+                        var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ScheduleMetadataSchemaGuid);
+                        if (metadata == null) return new List<IViewData>();
+                        var title = GetMetadata(metadata.MetadataXml, "Title");
+                        data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
+                        data.Type = "Schedule";
+                        data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
 
-            var data  = new SearchViewData();
-            var title =  metadata.MetadataXml.Descendants("Title").FirstOrDefault();
+                        break;
+                    }
+            }
 
-            data.Id    = obj.Guid.ToString();
-            data.Title = title.Value;
+            data.Id = obj.Guid.ToString();
 
-            return new[] {data};
+            return new[] { data };
+        }
+
+        private string GetMetadata(XDocument xroot, string field)
+        {
+            var elm = xroot.Descendants(field).FirstOrDefault();
+            if (elm == null)
+                return string.Empty;
+
+            return elm.Value;
         }
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
         {
+            query.Query = string.Format("(Title:\"{0}\"^5)OR(FreeText:{0})", query.Query);
+
             return Query<SearchViewData>(query);
         }
     }
@@ -48,6 +80,7 @@ namespace Chaos.Portal.Module.Larmfm.View
         {
             yield return UniqueIdentifier;
             yield return new KeyValuePair<string, string>("Title", Title);
+            yield return new KeyValuePair<string, string>("Type", Type);
         }
 
         public KeyValuePair<string, string> UniqueIdentifier { get { return new KeyValuePair<string, string>("Id", Id); } }
@@ -58,5 +91,11 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         [Serialize]
         public string Title { get; set; }
+
+        [Serialize]
+        public string Type { get; set; }
+
+        [Serialize]
+        public string FreeText { get; set; }
     }
 }

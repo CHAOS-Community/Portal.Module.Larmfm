@@ -13,15 +13,32 @@
     public class SearchViewTest
     {
         [Test]
-        public void Index_GivenProgramObject_ReturnViewDataWithTitle()
+        public void Index_GivenRadioObject_ReturnViewDataWithPropertiesSet()
         {
             var view = new SearchView();
-            var obj  = Make_Object();
+            var obj  = Make_Radio_Object();
 
             var result = (SearchViewData) view.Index(obj).First();
 
             Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000001"));
             Assert.That(result.Title, Is.EqualTo("P7 MIX"));
+            Assert.That(result.Type, Is.EqualTo("Radio"));
+        }
+
+
+        [Test]
+        public void Index_GivenScheduleObject_ReturnViewDataWithPropertiesSet()
+        {
+            var view = new SearchView();
+            var obj  = Make_Schedule_Object();
+
+            var result = (SearchViewData)view.Index(obj).First();
+
+            Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000002"));
+            Assert.That(result.Title, Is.EqualTo("A-1967-04-01-P-0042.pdf"));
+            Assert.That(result.Type, Is.EqualTo("Schedule"));
+            Assert.That(result.FreeText, Is.EqualTo("Test data content."));
+            
         }
 
         [Test]
@@ -30,17 +47,18 @@
             var data = new SearchViewData
                 {
                     Id = "00000000-0000-0000-0000-000000000001",
-                    Title = "P7 MIX"
+                    Title = "P7 MIX",
+                    Type = "Radio"
                 };
 
             var result = data.GetIndexableFields().ToList();
 
-            Assert.That(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"),
-                        Is.True);
+            Assert.That(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), Is.True);
             Assert.That(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), Is.True);
+            Assert.That(result.Any(item => item.Key == "Type" && item.Value == "Radio"), Is.True);
         }
 
-        private static Object Make_Object()
+        private static Object Make_Radio_Object()
         {
             return new Object
                 {
@@ -55,6 +73,23 @@
                                 }
                         }
                 };
+        }
+
+        private static Object Make_Schedule_Object()
+        {
+            return new Object
+            {
+                Guid = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                ObjectTypeID = 39,
+                Metadatas = new List<Metadata>
+                        {
+                            new Metadata
+                                {
+                                    MetadataSchemaGuid = Guid.Parse("70c26faf-b1ee-41e8-b916-a5a16b25ca69"),
+                                    MetadataXml        = XDocument.Parse(@"<Larm.HvideProgram><Titel></Titel><Filename>A-1967-04-01-P-0042.pdf</Filename><AllText>Test data content.</AllText><Date>1967-04-01T00:00:00</Date><Type>Program</Type></Larm.HvideProgram>")
+                                }
+                        }
+            };
         }
     }
 }
