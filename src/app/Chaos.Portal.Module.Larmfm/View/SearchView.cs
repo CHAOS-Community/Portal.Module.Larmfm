@@ -72,8 +72,8 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
         {
-            if (query.Query != "*:*") 
-                query.Query = string.Format("(Title:{0}*^5)OR(FreeText:{0}*)", query.Query);
+            if (query.Query != "*:*")
+                query.Query = string.Format("(Title:\"{0}\"^5)OR(Title:{0}*^2)OR(FreeText:{0}*)", query.Query);
 
             return Query<SearchViewData>(query);
         }
