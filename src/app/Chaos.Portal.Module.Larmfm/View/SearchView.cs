@@ -49,8 +49,7 @@ namespace Chaos.Portal.Module.Larmfm.View
                         data.Title    = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
                         data.Type     = "Schedule";
                         data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
-                        data.Url = GetMetadata(metadata.MetadataXml, "Filename");
-
+                        data.Url = GetUrl(obj, "PDF");
                         break;
                     }
                 default :
@@ -69,6 +68,12 @@ namespace Chaos.Portal.Module.Larmfm.View
                 return string.Empty;
 
             return elm.Value;
+        }
+
+        private string GetUrl(Mcm.Data.Dto.Object obj, string formatCategory)
+        {
+            var fileinfo = obj.Files.FirstOrDefault(item => item.FormatCategory == formatCategory);
+            return fileinfo == null ? string.Empty : fileinfo.URL;
         }
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)

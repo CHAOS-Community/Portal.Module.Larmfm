@@ -42,7 +42,7 @@
             Assert.That(result.Title, Is.EqualTo("A-1967-04-01-P-0042.pdf"));
             Assert.That(result.Type, Is.EqualTo("Schedule"));
             Assert.That(result.FreeText, Is.EqualTo("Test data content."));
-            Assert.That(result.Url, Is.EqualTo("A-1967-04-01-P-0042.pdf"));
+            Assert.That(result.Url, Is.EqualTo("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_B/1976_10-12/PDF/B-1976-12-02-P-0107.pdf"));
             
         }
 
@@ -95,7 +95,23 @@
                                     MetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid(),
                                     MetadataXml        = XDocument.Parse(@"<Larm.HvideProgram><Titel></Titel><Filename>A-1967-04-01-P-0042.pdf</Filename><AllText>Test data content.</AllText><Date>1967-04-01T00:00:00</Date><Type>Program</Type></Larm.HvideProgram>")
                                 }
-                        }
+                        },
+                Files = new List<FileInfo>
+                {
+                    new FileInfo{
+                        ID = 3880365,
+                        Filename = "B-1976-12-02-P-0107.pdf",
+                        OriginalFilename = "B-1976-12-02-P-0107.pdf",
+                        Token = "HTTP Download",
+                        StringFormat = "{BASE_PATH}{FOLDER_PATH}{FILENAME}",
+                        BasePath = "http://s3-eu-west-1.amazonaws.com/chaosdata",
+                        FolderPath = "/Hvideprogrammer/arkiv_B/1976_10-12/PDF/",
+                        FormatID = 38,
+                        Format = "PDF",
+                        FormatCategory = "PDF",
+                        FormatType = "Other"
+                    }
+                }
             };
         }
     }
