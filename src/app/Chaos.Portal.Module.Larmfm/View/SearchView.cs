@@ -88,7 +88,6 @@ namespace Chaos.Portal.Module.Larmfm.View
             
             yield return new KeyValuePair<string, string>("Title", Title);
             yield return new KeyValuePair<string, string>("Type", Type);
-            yield return new KeyValuePair<string, string>("Url", Url);
             
             if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText);
         }
