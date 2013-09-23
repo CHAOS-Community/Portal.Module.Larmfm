@@ -49,7 +49,8 @@ namespace Chaos.Portal.Module.Larmfm.View
                         data.Title    = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
                         data.Type     = "Schedule";
                         data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
-                        
+                        data.Url = GetMetadata(metadata.MetadataXml, "Filename");
+
                         break;
                     }
                 default :
@@ -87,6 +88,7 @@ namespace Chaos.Portal.Module.Larmfm.View
             
             yield return new KeyValuePair<string, string>("Title", Title);
             yield return new KeyValuePair<string, string>("Type", Type);
+            yield return new KeyValuePair<string, string>("Url", Url);
             
             if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText);
         }
@@ -102,6 +104,9 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         [Serialize]
         public string Type { get; set; }
+
+        [Serialize]
+        public string Url { get; set; }
 
         public string FreeText { get; set; }
     }

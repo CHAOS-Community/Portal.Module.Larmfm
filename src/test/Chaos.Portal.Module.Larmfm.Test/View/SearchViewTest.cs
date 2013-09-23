@@ -42,6 +42,7 @@
             Assert.That(result.Title, Is.EqualTo("A-1967-04-01-P-0042.pdf"));
             Assert.That(result.Type, Is.EqualTo("Schedule"));
             Assert.That(result.FreeText, Is.EqualTo("Test data content."));
+            Assert.That(result.Url, Is.EqualTo("A-1967-04-01-P-0042.pdf"));
             
         }
 
@@ -53,6 +54,7 @@
                     Id       = "00000000-0000-0000-0000-000000000001",
                     Title    = "P7 MIX",
                     Type     = "Radio",
+                    Url      = "A-1967-04-01-P-0042.pdf",
                     FreeText = "test text"
                 };
 
@@ -61,6 +63,7 @@
             Assert.That(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), Is.True);
             Assert.That(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), Is.True);
             Assert.That(result.Any(item => item.Key == "Type" && item.Value == "Radio"), Is.True);
+            Assert.That(result.Any(item => item.Key == "Url" && item.Value == "A-1967-04-01-P-0042.pdf"), Is.True);
             Assert.That(result.First(item => item.Key == "FreeText").Value, Is.EqualTo("test text"));
         }
 
