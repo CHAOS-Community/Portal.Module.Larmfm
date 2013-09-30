@@ -27,6 +27,8 @@
             Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000001"));
             Assert.That(result.Title, Is.EqualTo("P7 MIX"));
             Assert.That(result.Type, Is.EqualTo("Radio"));
+            Assert.That(result.PubStartDate,  Is.EqualTo("2012-02-21T16:03:00Z"));
+            Assert.That(result.PubEndDate, Is.EqualTo("2012-02-22T00:03:00Z"));
         }
 
 
@@ -43,7 +45,8 @@
             Assert.That(result.Type, Is.EqualTo("Schedule"));
             Assert.That(result.FreeText, Is.EqualTo("Test data content."));
             Assert.That(result.Url, Is.EqualTo("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_B/1976_10-12/PDF/B-1976-12-02-P-0107.pdf"));
-            
+            Assert.That(result.PubStartDate,  Is.EqualTo("1967-04-01T00:00:00Z"));
+            Assert.That(result.PubEndDate, Is.EqualTo(string.Empty));
         }
 
         [Test]
@@ -54,7 +57,9 @@
                     Id       = "00000000-0000-0000-0000-000000000001",
                     Title    = "P7 MIX",
                     Type     = "Radio",
-                    FreeText = "test text"
+                    FreeText = "test text",
+                    PubStartDate = "2012-02-21T16:03:00",
+                    PubEndDate = "2012-02-22T00:03:00"
                 };
 
             var result = data.GetIndexableFields().ToList();
@@ -63,6 +68,8 @@
             Assert.That(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), Is.True);
             Assert.That(result.Any(item => item.Key == "Type" && item.Value == "Radio"), Is.True);
             Assert.That(result.First(item => item.Key == "FreeText").Value, Is.EqualTo("test text"));
+            Assert.That(result.First(item => item.Key == "PubStartDate").Value, Is.EqualTo("2012-02-21T16:03:00"));
+            Assert.That(result.First(item => item.Key == "PubEndDate").Value, Is.EqualTo("2012-02-22T00:03:00"));
         }
 
         private static Object Make_Radio_Object()

@@ -39,6 +39,8 @@ namespace Chaos.Portal.Module.Larmfm.View
                         if (metadata == null) return new List<IViewData>();
                         data.Title = GetMetadata(metadata.MetadataXml, "Title");
                         data.Type = "Radio";
+                        data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime"));
+                        data.PubEndDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
                         break;
                     }
                 case ScheduleObjectId:
@@ -50,6 +52,8 @@ namespace Chaos.Portal.Module.Larmfm.View
                         data.Type     = "Schedule";
                         data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
                         data.Url = GetUrl(obj, "PDF");
+                        data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
+                        data.PubEndDate = string.Empty;
                         break;
                     }
                 default :
@@ -93,6 +97,11 @@ namespace Chaos.Portal.Module.Larmfm.View
             
             yield return new KeyValuePair<string, string>("Title", Title);
             yield return new KeyValuePair<string, string>("Type", Type);
+
+            if (!string.IsNullOrEmpty(PubStartDate))
+                yield return new KeyValuePair<string, string>("PubStartDate", PubStartDate);
+            if (!string.IsNullOrEmpty(PubEndDate))
+                yield return new KeyValuePair<string, string>("PubEndDate", PubEndDate);
             
             if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText);
         }
@@ -113,5 +122,12 @@ namespace Chaos.Portal.Module.Larmfm.View
         public string Url { get; set; }
 
         public string FreeText { get; set; }
+
+        [Serialize]
+        public string PubStartDate { get; set; }
+
+        [Serialize]
+        public string PubEndDate { get; set; }
+
     }
 }
