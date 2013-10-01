@@ -29,6 +29,8 @@
             Assert.That(result.Type, Is.EqualTo("Radio"));
             Assert.That(result.PubStartDate,  Is.EqualTo("2012-02-21T16:03:00Z"));
             Assert.That(result.PubEndDate, Is.EqualTo("2012-02-22T00:03:00Z"));
+            Assert.That(result.PubStartDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-21T16:03:00")));
+            Assert.That(result.PubEndDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-22T00:03:00")));
         }
 
 
@@ -46,6 +48,7 @@
             Assert.That(result.FreeText, Is.EqualTo("Test data content."));
             Assert.That(result.Url, Is.EqualTo("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_B/1976_10-12/PDF/B-1976-12-02-P-0107.pdf"));
             Assert.That(result.PubStartDate,  Is.EqualTo("1967-04-01T00:00:00Z"));
+            Assert.That(result.PubStartDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("1967-04-01T00:00:00")));
             Assert.That(result.PubEndDate, Is.EqualTo(string.Empty));
         }
 
