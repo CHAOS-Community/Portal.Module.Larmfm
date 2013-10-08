@@ -15,9 +15,11 @@ namespace Chaos.Portal.Module.Larmfm.View
     {
         private const int RadioObjectId    = 24;
         private const int ScheduleObjectId = 86;
+        private const int ScheduleNoteObjectId = 87;
 
         private static readonly Guid ProgramMetadataSchemaGuid  = Guid.Parse("00000000-0000-0000-0000-0000df820000");
         private static readonly Guid ScheduleMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
+        private static readonly Guid ScheduleNoteMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
 
         public SearchView() : base("Search")
         {
@@ -47,13 +49,14 @@ namespace Chaos.Portal.Module.Larmfm.View
                     {
                         var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ScheduleMetadataSchemaGuid);
                         if (metadata == null) return new List<IViewData>();
-                        var title = GetMetadata(metadata.MetadataXml, "Title");
-                        data.Title    = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
-                        data.Type     = "Schedule";
-                        data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
-                        data.Url = GetUrl(obj, "PDF");
-                        data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
-                        data.PubEndDate = string.Empty;
+                        FillSchedule(obj, data, metadata, "Schedule");
+                        break;
+                    }
+                case ScheduleNoteObjectId:
+                    {
+                        var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ScheduleNoteMetadataSchemaGuid);
+                        if (metadata == null) return new List<IViewData>();
+                        FillSchedule(obj, data, metadata, "ScheduleNote");
                         break;
                     }
                 default :
@@ -63,6 +66,17 @@ namespace Chaos.Portal.Module.Larmfm.View
             data.Id = obj.Guid.ToString();
 
             return new[] { data };
+        }
+
+        private void FillSchedule(Mcm.Data.Dto.Object obj, SearchViewData data, Metadata metadata, string type)
+        {
+            var title = GetMetadata(metadata.MetadataXml, "Title");
+            data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
+            data.Type = type;
+            data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
+            data.Url = GetUrl(obj, "PDF");
+            data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
+            data.PubEndDate = string.Empty;
         }
 
         private string GetMetadata(XDocument xroot, string field)

@@ -53,6 +53,24 @@
         }
 
         [Test]
+        public void Index_GivenScheduleNoteObject_ReturnViewDataWithPropertiesSet()
+        {
+            var view = new SearchView();
+            var obj = Make_ScheduleNote_Object();
+
+            var result = (SearchViewData)view.Index(obj).First();
+
+            Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000003"));
+            Assert.That(result.Title, Is.EqualTo("A-1964-10-24-S-0321.pdf"));
+            Assert.That(result.Type, Is.EqualTo("ScheduleNote"));
+            Assert.That(result.FreeText, Is.EqualTo("Test data content."));
+            Assert.That(result.Url, Is.EqualTo("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_A/1964_10_2/PDF/A-1964-10-24-S-0321.pdf"));
+            Assert.That(result.PubStartDate, Is.EqualTo("1964-10-24T00:00:00Z"));
+            Assert.That(result.PubStartDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("1964-10-24T00:00:00")));
+            Assert.That(result.PubEndDate, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
         public void GetIndexableFields_GivenSearchViewData_ReturnTitleField()
         {
             var data = new SearchViewData
@@ -116,6 +134,39 @@
                         StringFormat = "{BASE_PATH}{FOLDER_PATH}{FILENAME}",
                         BasePath = "http://s3-eu-west-1.amazonaws.com/chaosdata",
                         FolderPath = "/Hvideprogrammer/arkiv_B/1976_10-12/PDF/",
+                        FormatID = 38,
+                        Format = "PDF",
+                        FormatCategory = "PDF",
+                        FormatType = "Other"
+                    }
+                }
+            };
+        }
+
+        private static Object Make_ScheduleNote_Object()
+        {
+            return new Object
+            {
+                Guid = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                ObjectTypeID = 87,
+                Metadatas = new List<Metadata>
+                        {
+                            new Metadata
+                                {
+                                    MetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid(),
+                                    MetadataXml        = XDocument.Parse(@"<Larm.HvideProgram><Titel></Titel><Filename>A-1964-10-24-S-0321.pdf</Filename><AllText>Test data content.</AllText><Date>1964-10-24T00:00:00</Date><Type>Supplerende</Type></Larm.HvideProgram>")
+                                }
+                        },
+                Files = new List<FileInfo>
+                {
+                    new FileInfo{
+                        ID = 3880365,
+                        Filename = "A-1964-10-24-S-0321.pdf",
+                        OriginalFilename = "A-1964-10-24-S-0321.pdf",
+                        Token = "HTTP Download",
+                        StringFormat = "{BASE_PATH}{FOLDER_PATH}{FILENAME}",
+                        BasePath = "http://s3-eu-west-1.amazonaws.com/chaosdata",
+                        FolderPath = "/Hvideprogrammer/arkiv_A/1964_10_2/PDF/",
                         FormatID = 38,
                         Format = "PDF",
                         FormatCategory = "PDF",
