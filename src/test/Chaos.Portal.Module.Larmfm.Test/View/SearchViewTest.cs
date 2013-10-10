@@ -93,6 +93,22 @@
             Assert.That(result.First(item => item.Key == "PubEndDate").Value, Is.EqualTo("2012-02-22T00:03:00"));
         }
 
+        [Test]
+        public void DateTimeHelper_ParseAndFormatDate()
+        {
+            string datestring = "1056-11-13T00:00:00";
+            string parseddatestring = Chaos.Portal.Module.Larmfm.Helpers.DateTimeHelper.ParseAndFormatDate(datestring);
+            Assert.That(parseddatestring, Is.EqualTo("1956-11-13T00:00:00Z"));
+
+            datestring = "1956-11-13T00:00:00";
+            parseddatestring = Chaos.Portal.Module.Larmfm.Helpers.DateTimeHelper.ParseAndFormatDate(datestring);
+            Assert.That(parseddatestring, Is.EqualTo("1956-11-13T00:00:00Z"));
+
+            datestring = "1956-13-13T00:00:00";
+            parseddatestring = Chaos.Portal.Module.Larmfm.Helpers.DateTimeHelper.ParseAndFormatDate(datestring);
+            Assert.That(parseddatestring, Is.EqualTo(string.Empty));
+        }
+
         private static Object Make_Radio_Object()
         {
             return new Object

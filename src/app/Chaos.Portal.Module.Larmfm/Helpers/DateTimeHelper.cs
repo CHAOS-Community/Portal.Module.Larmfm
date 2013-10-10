@@ -21,6 +21,9 @@ namespace Chaos.Portal.Module.Larmfm.Helpers
             if (string.IsNullOrEmpty(datetext))
                 return string.Empty;
 
+            // HACK: Programoversigt has a year issue. The OCR says 1056, but it is 1956.
+            datetext = datetext.Replace("1056", "1956");
+
             CultureInfo formatProvider = CultureInfo.InvariantCulture;
             DateTime result;
 
