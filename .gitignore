@@ -4,9 +4,9 @@ bin
 !/tools/*/bin
 !/bin
 !/lib/*.dll
-!/tools/*/*.dll
-!/tools/*/*/*.dll
-!/tools/*/*/*/*.dll
+!/tools/*/*
+!/tools/*/*/*
+!/tools/*/*/*/*
 obj
 
 .DS_Store
