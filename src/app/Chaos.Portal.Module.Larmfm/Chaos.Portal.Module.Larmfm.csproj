@@ -66,6 +66,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Search.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="LarmModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,7 @@
-﻿namespace Chaos.Portal.Module.Larmfm
+﻿using Chaos.Mcm.Permission;
+using Chaos.Portal.Module.Larmfm.Extensions;
+
+namespace Chaos.Portal.Module.Larmfm
 {
     using System.Collections.Generic;
     using System.Configuration;
@@ -11,7 +14,6 @@
     using Chaos.Portal.Core.Exceptions;
     using Chaos.Portal.Core.Extension;
     using Chaos.Portal.Core.Indexing.Solr;
-    using Chaos.Portal.Core.Module;
     using Chaos.Portal.Module.Larmfm.View;
 
     public class LarmModule : McmModule
@@ -26,13 +28,30 @@
         public override void Load(Core.IPortalApplication portalApplication)
         {
             base.Load(portalApplication);
-
-            var searchView = new SearchView();
+            
+            var searchView = new SearchView(base.PermissionManager);
             searchView.WithPortalApplication(portalApplication);
             searchView.WithCache(portalApplication.Cache);
             searchView.WithIndex(new SolrCore(new HttpConnection(ConfigurationManager.AppSettings["SOLR_URL"]), "larm-search"));
 
             portalApplication.ViewManager.AddView(searchView);
+        }
+
+        public override IExtension GetExtension(Protocol version, string name)
+        {
+            if (name == "Search")
+                return new Search(PortalApplication);
+
+            return base.GetExtension(version, name);
+        }
+        public override IEnumerable<string> GetExtensionNames(Protocol version)
+        {
+            foreach (var name in base.GetExtensionNames(version))
+            {
+                yield return name;
+            }
+
+            yield return "Search";
         }
 
         #endregion

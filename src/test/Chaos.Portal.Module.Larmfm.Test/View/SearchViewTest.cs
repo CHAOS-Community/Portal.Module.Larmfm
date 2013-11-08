@@ -19,7 +19,7 @@
         [Test]
         public void Index_GivenRadioObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView();
+            var view = new SearchView(TODO);
             var obj  = Make_Radio_Object();
 
             var result = (SearchViewData) view.Index(obj).First();
@@ -37,7 +37,7 @@
         [Test]
         public void Index_GivenScheduleObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView();
+            var view = new SearchView(TODO);
             var obj  = Make_Schedule_Object();
 
             var result = (SearchViewData)view.Index(obj).First();
@@ -55,7 +55,7 @@
         [Test]
         public void Index_GivenScheduleNoteObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView();
+            var view = new SearchView(TODO);
             var obj = Make_ScheduleNote_Object();
 
             var result = (SearchViewData)view.Index(obj).First();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CHAOS.Serialization;
+using Chaos.Mcm.Permission;
 using Chaos.Portal.Core.Indexing.View;
 using Chaos.Mcm.Data.Dto;
 using System.Xml.Linq;
@@ -13,6 +14,7 @@ namespace Chaos.Portal.Module.Larmfm.View
 
     public class SearchView : AView
     {
+        private IPermissionManager PermissionManager { get; set; }
         private const int RadioObjectId    = 24;
         private const int ScheduleObjectId = 86;
         private const int ScheduleNoteObjectId = 87;
@@ -21,8 +23,9 @@ namespace Chaos.Portal.Module.Larmfm.View
         private static readonly Guid ScheduleMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
         private static readonly Guid ScheduleNoteMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
 
-        public SearchView() : base("Search")
+        public SearchView(IPermissionManager permissionManager) : base("Search")
         {
+            PermissionManager = permissionManager;
         }
 
         public override IList<IViewData> Index(object objectsToIndex)
