@@ -5,7 +5,8 @@
 
     using CHAOS;
     using CHAOS.Extensions;
-
+    using Mcm.Permission;
+    using Moq;
     using NUnit.Framework;
     using System.Xml.Linq;
     using Mcm.Data.Dto;
@@ -16,10 +17,12 @@
     [TestFixture]
     public class SearchViewTest
     {
+        Mock<IPermissionManager> PermissionManager = new Mock<IPermissionManager>();
+        
         [Test]
         public void Index_GivenRadioObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView(TODO);
+            var view = new SearchView(PermissionManager.Object);
             var obj  = Make_Radio_Object();
 
             var result = (SearchViewData) view.Index(obj).First();
@@ -37,7 +40,7 @@
         [Test]
         public void Index_GivenScheduleObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView(TODO);
+            var view = new SearchView(PermissionManager.Object);
             var obj  = Make_Schedule_Object();
 
             var result = (SearchViewData)view.Index(obj).First();
@@ -55,7 +58,7 @@
         [Test]
         public void Index_GivenScheduleNoteObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView(TODO);
+            var view = new SearchView(PermissionManager.Object);
             var obj = Make_ScheduleNote_Object();
 
             var result = (SearchViewData)view.Index(obj).First();
@@ -143,7 +146,7 @@
                 Files = new List<FileInfo>
                 {
                     new FileInfo{
-                        ID = 3880365,
+                        Id = 3880365,
                         Filename = "B-1976-12-02-P-0107.pdf",
                         OriginalFilename = "B-1976-12-02-P-0107.pdf",
                         Token = "HTTP Download",
@@ -176,7 +179,7 @@
                 Files = new List<FileInfo>
                 {
                     new FileInfo{
-                        ID = 3880365,
+                        Id = 3880365,
                         Filename = "A-1964-10-24-S-0321.pdf",
                         OriginalFilename = "A-1964-10-24-S-0321.pdf",
                         Token = "HTTP Download",
