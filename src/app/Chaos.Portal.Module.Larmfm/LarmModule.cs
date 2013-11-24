@@ -43,7 +43,8 @@ namespace Chaos.Portal.Module.Larmfm
                 return new Search(PortalApplication);
 
             return base.GetExtension(version, name);
-        }
+        }
+
         public override IEnumerable<string> GetExtensionNames(Protocol version)
         {
             foreach (var name in base.GetExtensionNames(version))

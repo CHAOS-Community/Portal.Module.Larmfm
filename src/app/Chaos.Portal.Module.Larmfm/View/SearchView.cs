@@ -99,6 +99,7 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
         {
+            // TODO: split query.Query. Support AND, OR and NOT operators and double qoutes.
             if (query.Query != "*:*")
                 query.Query = string.Format("(Title:\"{0}\"^5)OR(Title:{0}*^2)OR(FreeText:{0}*)", query.Query);
 
