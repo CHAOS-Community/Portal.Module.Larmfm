@@ -12,6 +12,7 @@ namespace Chaos.Portal.Module.Larmfm.View
     using CHAOS;
     using CHAOS.Extensions;
     using Chaos.Portal.Module.Larmfm.Helpers;
+    using System.Globalization;
 
     public class SearchView : AView
     {
@@ -90,6 +91,7 @@ namespace Chaos.Portal.Module.Larmfm.View
                     return new List<IViewData>();
             }
 
+            data.ObjectFolders = obj.ObjectFolders;
             data.Id = obj.Guid.ToString();
 
             return new[] { data };
@@ -180,6 +182,12 @@ namespace Chaos.Portal.Module.Larmfm.View
             if (!string.IsNullOrEmpty(AnnotationCount)) yield return new KeyValuePair<string, string>("AnnotationCount", AnnotationCount);
 
             if (!string.IsNullOrEmpty(AttachedFilesCount)) yield return new KeyValuePair<string, string>("AttachedFilesCount", AttachedFilesCount);
+
+            if (ObjectFolders != null)
+                foreach (var objectFolder in ObjectFolders)
+                {
+                    yield return new KeyValuePair<string, string>("FolderID", objectFolder.ID.ToString(CultureInfo.InvariantCulture));
+                }
         }
 
         public KeyValuePair<string, string> UniqueIdentifier { get { return new KeyValuePair<string, string>("Id", Id); } }
@@ -224,5 +232,6 @@ namespace Chaos.Portal.Module.Larmfm.View
         [Serialize]
         public string PubEndDate { get; set; }
 
+        public IList<ObjectFolder> ObjectFolders { get; set; }
     }
 }
