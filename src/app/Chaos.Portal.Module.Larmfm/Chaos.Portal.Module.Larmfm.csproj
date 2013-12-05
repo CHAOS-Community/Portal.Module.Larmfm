@@ -11,6 +11,7 @@
     <AssemblyName>Chaos.Portal.Module.Larmfm</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CHAOS">
@@ -68,8 +72,13 @@
   <ItemGroup>
     <Compile Include="Extensions\Search.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
+    <Compile Include="Helpers\MetadataHelper.cs" />
+    <Compile Include="Helpers\PortalHelper.cs" />
+    <Compile Include="Helpers\TimeCodeHelper.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="LarmModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\AnnotationView.cs" />
     <Compile Include="View\ObjectView.cs" />
     <Compile Include="View\SearchView.cs" />
   </ItemGroup>

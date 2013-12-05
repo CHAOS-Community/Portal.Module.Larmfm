@@ -7,19 +7,19 @@
     using CHAOS.Extensions;
     using Mcm.Permission;
     using Moq;
-    using NUnit.Framework;
     using System.Xml.Linq;
     using Mcm.Data.Dto;
     using System.Linq;
     using Larmfm.View;
     using Object = Mcm.Data.Dto.Object;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestFixture]
+    [TestClass]
     public class SearchViewTest
     {
         Mock<IPermissionManager> PermissionManager = new Mock<IPermissionManager>();
-        
-        [Test]
+
+        [TestMethod]
         public void Index_GivenRadioObject_ReturnViewDataWithPropertiesSet()
         {
             var view = new SearchView(PermissionManager.Object);
@@ -27,17 +27,17 @@
 
             var result = (SearchViewData) view.Index(obj).First();
 
-            Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000001"));
-            Assert.That(result.Title, Is.EqualTo("P7 MIX"));
-            Assert.That(result.Type, Is.EqualTo("Radio"));
-            Assert.That(result.PubStartDate,  Is.EqualTo("2012-02-21T16:03:00Z"));
-            Assert.That(result.PubEndDate, Is.EqualTo("2012-02-22T00:03:00Z"));
-            Assert.That(result.PubStartDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-21T16:03:00")));
-            Assert.That(result.PubEndDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-22T00:03:00")));
+            Assert.AreEqual(result.Id, "00000000-0000-0000-0000-000000000001");
+            Assert.AreEqual(result.Title, "P7 MIX");
+            Assert.AreEqual(result.Type, "Radio");
+            Assert.AreEqual(result.PubStartDate, "2012-02-21T16:03:00Z");
+            Assert.AreEqual(result.PubEndDate, "2012-02-22T00:03:00Z");
+            Assert.AreEqual(result.PubStartDate, (Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-21T16:03:00")));
+            Assert.AreEqual(result.PubEndDate, Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-22T00:03:00"));
         }
 
 
-        [Test]
+        [TestMethod]
         public void Index_GivenScheduleObject_ReturnViewDataWithPropertiesSet()
         {
             var view = new SearchView(PermissionManager.Object);
@@ -45,17 +45,17 @@
 
             var result = (SearchViewData)view.Index(obj).First();
 
-            Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000002"));
-            Assert.That(result.Title, Is.EqualTo("A-1967-04-01-P-0042.pdf"));
-            Assert.That(result.Type, Is.EqualTo("Schedule"));
-            Assert.That(result.FreeText, Is.EqualTo("Test data content."));
-            Assert.That(result.Url, Is.EqualTo("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_B/1976_10-12/PDF/B-1976-12-02-P-0107.pdf"));
-            Assert.That(result.PubStartDate,  Is.EqualTo("1967-04-01T00:00:00Z"));
-            Assert.That(result.PubStartDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("1967-04-01T00:00:00")));
-            Assert.That(result.PubEndDate, Is.EqualTo(string.Empty));
+            Assert.AreEqual(result.Id, ("00000000-0000-0000-0000-000000000002"));
+            Assert.AreEqual(result.Title, ("A-1967-04-01-P-0042.pdf"));
+            Assert.AreEqual(result.Type, ("Schedule"));
+            Assert.AreEqual(result.FreeText, ("Test data content."));
+            Assert.AreEqual(result.Url, ("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_B/1976_10-12/PDF/B-1976-12-02-P-0107.pdf"));
+            Assert.AreEqual(result.PubStartDate,  ("1967-04-01T00:00:00Z"));
+            Assert.AreEqual(result.PubStartDate, (Helpers.DateTimeHelper.ParseAndFormatDate("1967-04-01T00:00:00")));
+            Assert.AreEqual(result.PubEndDate, (string.Empty));
         }
 
-        [Test]
+        [TestMethod]
         public void Index_GivenScheduleNoteObject_ReturnViewDataWithPropertiesSet()
         {
             var view = new SearchView(PermissionManager.Object);
@@ -63,17 +63,17 @@
 
             var result = (SearchViewData)view.Index(obj).First();
 
-            Assert.That(result.Id, Is.EqualTo("00000000-0000-0000-0000-000000000003"));
-            Assert.That(result.Title, Is.EqualTo("A-1964-10-24-S-0321.pdf"));
-            Assert.That(result.Type, Is.EqualTo("ScheduleNote"));
-            Assert.That(result.FreeText, Is.EqualTo("Test data content."));
-            Assert.That(result.Url, Is.EqualTo("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_A/1964_10_2/PDF/A-1964-10-24-S-0321.pdf"));
-            Assert.That(result.PubStartDate, Is.EqualTo("1964-10-24T00:00:00Z"));
-            Assert.That(result.PubStartDate, Is.EqualTo(Helpers.DateTimeHelper.ParseAndFormatDate("1964-10-24T00:00:00")));
-            Assert.That(result.PubEndDate, Is.EqualTo(string.Empty));
+            Assert.AreEqual(result.Id, ("00000000-0000-0000-0000-000000000003"));
+            Assert.AreEqual(result.Title, ("A-1964-10-24-S-0321.pdf"));
+            Assert.AreEqual(result.Type, ("ScheduleNote"));
+            Assert.AreEqual(result.FreeText, ("Test data content."));
+            Assert.AreEqual(result.Url, ("http://s3-eu-west-1.amazonaws.com/chaosdata/Hvideprogrammer/arkiv_A/1964_10_2/PDF/A-1964-10-24-S-0321.pdf"));
+            Assert.AreEqual(result.PubStartDate, ("1964-10-24T00:00:00Z"));
+            Assert.AreEqual(result.PubStartDate, (Helpers.DateTimeHelper.ParseAndFormatDate("1964-10-24T00:00:00")));
+            Assert.AreEqual(result.PubEndDate, (string.Empty));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableFields_GivenSearchViewData_ReturnTitleField()
         {
             var data = new SearchViewData
@@ -88,28 +88,28 @@
 
             var result = data.GetIndexableFields().ToList();
 
-            Assert.That(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), Is.True);
-            Assert.That(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), Is.True);
-            Assert.That(result.Any(item => item.Key == "Type" && item.Value == "Radio"), Is.True);
-            Assert.That(result.First(item => item.Key == "FreeText").Value, Is.EqualTo("test text"));
-            Assert.That(result.First(item => item.Key == "PubStartDate").Value, Is.EqualTo("2012-02-21T16:03:00"));
-            Assert.That(result.First(item => item.Key == "PubEndDate").Value, Is.EqualTo("2012-02-22T00:03:00"));
+            Assert.AreEqual(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), true);
+            Assert.AreEqual(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), true);
+            Assert.AreEqual(result.Any(item => item.Key == "Type" && item.Value == "Radio"), true);
+            Assert.AreEqual(result.First(item => item.Key == "FreeText").Value, ("test text"));
+            Assert.AreEqual(result.First(item => item.Key == "PubStartDate").Value, ("2012-02-21T16:03:00"));
+            Assert.AreEqual(result.First(item => item.Key == "PubEndDate").Value, ("2012-02-22T00:03:00"));
         }
 
-        [Test]
+        [TestMethod]
         public void DateTimeHelper_ParseAndFormatDate()
         {
             string datestring = "1056-11-13T00:00:00";
             string parseddatestring = Chaos.Portal.Module.Larmfm.Helpers.DateTimeHelper.ParseAndFormatDate(datestring);
-            Assert.That(parseddatestring, Is.EqualTo("1956-11-13T00:00:00Z"));
+            Assert.AreEqual(parseddatestring, ("1956-11-13T00:00:00Z"));
 
             datestring = "1956-11-13T00:00:00";
             parseddatestring = Chaos.Portal.Module.Larmfm.Helpers.DateTimeHelper.ParseAndFormatDate(datestring);
-            Assert.That(parseddatestring, Is.EqualTo("1956-11-13T00:00:00Z"));
+            Assert.AreEqual(parseddatestring, ("1956-11-13T00:00:00Z"));
 
             datestring = "1956-13-13T00:00:00";
             parseddatestring = Chaos.Portal.Module.Larmfm.Helpers.DateTimeHelper.ParseAndFormatDate(datestring);
-            Assert.That(parseddatestring, Is.EqualTo(string.Empty));
+            Assert.AreEqual(parseddatestring, (string.Empty));
         }
 
         private static Object Make_Radio_Object()
@@ -124,6 +124,12 @@
                                 {
                                     MetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000"),
                                     MetadataXml        = XDocument.Parse("<Larm.Program><PublicationDateTime>2012-02-21T16:03:00</PublicationDateTime><PublicationEndDateTime>2012-02-22T00:03:00</PublicationEndDateTime><PublicationChannel>DR P7 Mix</PublicationChannel><Title>P7 MIX</Title><Abstract></Abstract><Description>Musik med pop og sjæl. </Description><Publisher></Publisher><Subjects /><Contributors></Contributors><Creators><Creator><Name></Name><RoleName></RoleName><RoleID></RoleID></Creator></Creators><Locations /><Identifiers><DR.ProductionNumber></DR.ProductionNumber><DR.ArchiveNumber></DR.ArchiveNumber><SB.DomsID>c431cb1d-081a-47de-a7d4-cd4275a7063a</SB.DomsID></Identifiers></Larm.Program>")
+                                },
+                            new Metadata
+                                {
+                                    MetadataSchemaGuid = Guid.Parse("17d59e41-13fb-469a-a138-bb691f13f2ba"),
+                                    MetadataXml = XDocument.Parse(@"<Larm.Metadata><Title></Title><Description>Montage fra åbningen af Christianias urtehospital, hvor man hører behandlere, patienter og gæster. Hunden Sofus piber, da den behandles. Drengen Christian får at vide, at han skal spise hvidløg og propolis for at komme af med sin halsbetændelse. En pige tjekkes for lus. En anden får et råd om blomsten Arnica, som styrker kredsløbet. En medarbejder fortæller om økonomien. Folk opfordres til at lægge en skilling. Medarbejderne betragter urtehospitalet som et lærested, de får indtil videre ikke løn. En jordemoder fortæller om sit arbejde. Pludselig får hun besøg af en mor og en baby. Babyen lå den gale vej, da hun skulle fødes. Så er der en samtale om øret. En medarbejder ser sammen med en rigtig læge på en betændt negl og diskuterer behandling. Nogle indbudte gæster giver deres forskellige meninger om urtehospitalet. En medarbejder fortæller, at de i første omgang ikke vil have nogen patienter indlagt. Stedet er åbent for alle christianitter. Man kan få urtebehandling, zoneterapi, massage, fodbade mm. Nogle medarbejdere er uddannede, andre har bare en masse erfaring. De sender ting, de ikke kan klare, videre til hospitalet. Så er der spillemandsmusik. En medarbejder fortæller, at de gerne vil arbejde for at forebygge sygdomme og hjælpe folk til selvhjælp.                                                                             Peter Kristiansen, tilrettelægger / Christian, patient med halsbetændeler</Description><Genre></Genre><Subjects></Subjects><Tags></Tags><Note></Note><RelatedObjects></RelatedObjects><Contributors /></Larm.Metadata>
+                                                                            ")
                                 }
                         }
                 };

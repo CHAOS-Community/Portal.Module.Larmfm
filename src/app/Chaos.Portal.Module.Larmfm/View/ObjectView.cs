@@ -83,6 +83,11 @@
                 yield return baseField;
             }
 
+            foreach (var folder in Object.ObjectFolders)
+            {
+                yield return new KeyValuePair<string, string>("FolderId", folder.ID.ToString());
+            }
+
             var programMetadata = Object.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == Guid.Parse("00000000-0000-0000-0000-0000df820000"));
 
             if (programMetadata != null)

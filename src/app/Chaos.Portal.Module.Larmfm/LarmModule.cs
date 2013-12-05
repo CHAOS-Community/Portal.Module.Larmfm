@@ -35,6 +35,13 @@ namespace Chaos.Portal.Module.Larmfm
             searchView.WithIndex(new SolrCore(new HttpConnection(ConfigurationManager.AppSettings["SOLR_URL"]), "larm-search"));
 
             portalApplication.ViewManager.AddView(searchView);
+
+            var annotationView = new AnnotationView(base.PermissionManager);
+            annotationView.WithPortalApplication(portalApplication);
+            annotationView.WithCache(portalApplication.Cache);
+            annotationView.WithIndex(new SolrCore(new HttpConnection(ConfigurationManager.AppSettings["SOLR_URL"]), "larm-annotation"));
+
+            portalApplication.ViewManager.AddView(annotationView);
         }
 
         public override IExtension GetExtension(Protocol version, string name)

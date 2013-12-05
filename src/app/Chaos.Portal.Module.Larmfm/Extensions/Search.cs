@@ -12,13 +12,14 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 {
     public class Search : AExtension
     {
-        public Search(IPortalApplication portalApplication) : base(portalApplication)
+        public Search(IPortalApplication portalApplication)
+            : base(portalApplication)
         {
         }
 
         public IPagedResult<IResult> Simple(string query)
         {
-            return ViewManager.GetView("Search").Query(new SolrQuery{Query = query});
+            return ViewManager.GetView("Search").Query(new SolrQuery { Query = query });
         }
 
         public IPagedResult<IResult> DateRange(string query, DateTime start, DateTime end)
