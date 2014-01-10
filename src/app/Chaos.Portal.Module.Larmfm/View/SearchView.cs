@@ -150,7 +150,8 @@ namespace Chaos.Portal.Module.Larmfm.View
         {
             // TODO: split query.Query. Support AND, OR and NOT operators and double qoutes.
             if (query.Query != "*:*")
-                query.Query = string.Format("(Title:\"{0}\"^5)OR(Title:{0}*^2)OR(FreeText:{0}*)", query.Query);
+                query.Query = string.Format("(FreeText:({0}))", query.Query);
+                //query.Query = string.Format("(Title:\"{0}\"^5)OR(Title:{0}*^2)OR(FreeText:{0}*)", query.Query);
 
             return Query<SearchViewData>(query);
         }
