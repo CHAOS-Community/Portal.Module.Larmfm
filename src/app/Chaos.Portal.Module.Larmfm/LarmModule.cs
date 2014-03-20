@@ -1,23 +1,22 @@
-﻿using Chaos.Mcm.Permission;
+﻿using System;
 using Chaos.Portal.Module.Larmfm.Extensions;
 
 namespace Chaos.Portal.Module.Larmfm
 {
     using System.Collections.Generic;
     using System.Configuration;
-    using System.Linq;
-
     using CHAOS.Net;
 
     using Chaos.Mcm;
     using Chaos.Portal.Core;
-    using Chaos.Portal.Core.Exceptions;
-    using Chaos.Portal.Core.Extension;
+    using Core.Extension;
     using Chaos.Portal.Core.Indexing.Solr;
     using Chaos.Portal.Module.Larmfm.View;
 
-    public class LarmModule : McmModule
+    public class LarmModule : McmModule, ILarmModule
     {
+		public LarmConfiguration Configuration { get; set; }
+
         #region Implementation of IModule
 
         protected override Core.Indexing.View.IView CreateObjectView()
@@ -28,6 +27,8 @@ namespace Chaos.Portal.Module.Larmfm
         public override void Load(Core.IPortalApplication portalApplication)
         {
             base.Load(portalApplication);
+
+			Configuration = new LarmConfiguration { UserProfileMetadataSchemaGuid = Guid.Parse("6EE5D41F-3A3F-254F-BA3E-3D9F80D5D49E"), UserProfileLanguageCode = "da", UserObjectTypeId = 55, UserFolderTypeId = 4, UsersFolder = "LARM/Users" };
             
             var searchView = new SearchView(base.PermissionManager);
             searchView.WithPortalApplication(portalApplication);
@@ -48,6 +49,8 @@ namespace Chaos.Portal.Module.Larmfm
         {
             if (name == "Search")
                 return new Search(PortalApplication);
+			if (name == "WayfProfile")
+				return new WayfProfile(PortalApplication, this);
 
             return base.GetExtension(version, name);
         }
@@ -60,6 +63,7 @@ namespace Chaos.Portal.Module.Larmfm
             }
 
             yield return "Search";
+            yield return "WayfProfile";
         }
 
         #endregion
