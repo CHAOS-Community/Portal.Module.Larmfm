@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CHAOS.Serialization;
-using Chaos.Mcm.Permission;
-using Chaos.Portal.Core.Indexing.View;
-using Chaos.Mcm.Data.Dto;
-using System.Xml.Linq;
-
-namespace Chaos.Portal.Module.Larmfm.View
+﻿namespace Chaos.Portal.Module.Larmfm.View
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Linq;
     using CHAOS;
     using CHAOS.Extensions;
-    using Chaos.Portal.Module.Larmfm.Helpers;
+    using CHAOS.Serialization;
+    using Core.Indexing.View;
+    using Helpers;
     using System.Globalization;
+    using Mcm.Data;
+    using Mcm.Data.Dto;
 
     public class SearchView : AView
     {
-        private IPermissionManager PermissionManager { get; set; }
+        public IMcmRepository Repository { get; set; }
         private const int RadioObjectId    = 24;
         private const int ScheduleObjectId = 86;
         private const int ScheduleNoteObjectId = 87;
@@ -28,9 +27,9 @@ namespace Chaos.Portal.Module.Larmfm.View
         private static readonly Guid ScheduleMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
         private static readonly Guid ScheduleNoteMetadataSchemaGuid = new UUID("70c26faf-b1ee-41e8-b916-a5a16b25ca69").ToGuid();
 
-        public SearchView(IPermissionManager permissionManager) : base("Search")
+        public SearchView(IMcmRepository repository) : base("Search")
         {
-            PermissionManager = permissionManager;
+            Repository = repository;
         }
 
         public override IList<IViewData> Index(object objectsToIndex)
@@ -136,14 +135,7 @@ namespace Chaos.Portal.Module.Larmfm.View
 
         private string GetAnnotationMetadata(Guid guid)
         {
-            return MetadataHelper.GetXmlContent(ObjectGet(guid).Metadatas.First().MetadataXml);
-        }
-
-        private Chaos.Mcm.Data.Dto.Object ObjectGet(Guid guid)
-        {
-            var mcmModule = PortalApplication.GetModule<Chaos.Mcm.McmModule>();
-            var mcmRepository = mcmModule.McmRepository;
-            return mcmRepository.ObjectGet(guid, true, true, true, true, true);
+            return MetadataHelper.GetXmlContent(Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.First().MetadataXml);
         }
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)

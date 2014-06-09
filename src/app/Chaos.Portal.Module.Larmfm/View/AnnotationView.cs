@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CHAOS.Serialization;
-using Chaos.Mcm.Permission;
-using Chaos.Portal.Core.Indexing.View;
-using Chaos.Mcm.Data.Dto;
-using System.Xml.Linq;
-
-namespace Chaos.Portal.Module.Larmfm.View
+﻿namespace Chaos.Portal.Module.Larmfm.View
 {
-    using CHAOS;
-    using CHAOS.Extensions;
-    using Chaos.Portal.Module.Larmfm.Helpers;
-    using System.Text;
+    using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
+    using System.Xml.Linq;
+    
+    using CHAOS.Serialization;
+    using Core.Indexing.View;
+    using Helpers;
+    using Mcm.Data;
 
     public class AnnotationView : AView 
     {
-        private IPermissionManager PermissionManager { get; set; }
+        public IMcmRepository Repository { get; set; }
         private uint annotationObjectTypeId = 64;
 
-        public AnnotationView(IPermissionManager permissionManager) : base("Annotation")
+        public AnnotationView(IMcmRepository repository) : base("Annotation")
         {
-            PermissionManager = permissionManager;
+            Repository = repository;
         }
 
         public override IList<IViewData> Index(object objectsToIndex)
@@ -51,8 +47,7 @@ namespace Chaos.Portal.Module.Larmfm.View
                 LanguageCode = metadata.LanguageCode,
                 ProgramGUID = obj.ObjectRelationInfos.First().Object1Guid.ToString(),
                 DateCreated = obj.DateCreated.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", CultureInfo.InvariantCulture),
-                DateModified =
-                    metadata.DateCreated.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", CultureInfo.InvariantCulture),
+                DateModified = metadata.DateCreated.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'", CultureInfo.InvariantCulture),
                 EditingUserGUID = metadata.EditingUserGuid.ToString()
             };
 
@@ -104,20 +99,13 @@ namespace Chaos.Portal.Module.Larmfm.View
 
             if (userGuid == Guid.Empty) return "";
 
-            var userObject = ObjectGet(userGuid);
+            var userObject = Repository.ObjectGet(userGuid, true, true, true, true, true);
 
             if (userObject == null) return "";
 
             if (userObject.Metadatas.Count == 0) return "";
 
             return userObject.Metadatas.First().MetadataXml.Descendants("Name").First().Value;
-        }
-
-        private Chaos.Mcm.Data.Dto.Object ObjectGet(Guid guid)
-        {
-            var mcmModule = PortalApplication.GetModule<Chaos.Mcm.McmModule>();
-            var mcmRepository = mcmModule.McmRepository;
-            return mcmRepository.ObjectGet(guid, true, true, true, true, true);
         }
     }
 

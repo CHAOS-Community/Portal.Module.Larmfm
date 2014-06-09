@@ -5,24 +5,20 @@
 
     using CHAOS;
     using CHAOS.Extensions;
-    using Mcm.Permission;
-    using Moq;
     using System.Xml.Linq;
     using Mcm.Data.Dto;
     using System.Linq;
     using Larmfm.View;
+    using NUnit.Framework;
     using Object = Mcm.Data.Dto.Object;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestClass]
-    public class SearchViewTest
+    [TestFixture]
+    public class SearchViewTest : TestBase
     {
-        Mock<IPermissionManager> PermissionManager = new Mock<IPermissionManager>();
-
-        [TestMethod]
+        [Test]
         public void Index_GivenRadioObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView(PermissionManager.Object);
+            var view = new SearchView(McmRepository.Object);
             var obj  = Make_Radio_Object();
 
             var result = (SearchViewData) view.Index(obj).First();
@@ -37,10 +33,10 @@
         }
 
 
-        [TestMethod]
+        [Test]
         public void Index_GivenScheduleObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView(PermissionManager.Object);
+            var view = new SearchView(McmRepository.Object);
             var obj  = Make_Schedule_Object();
 
             var result = (SearchViewData)view.Index(obj).First();
@@ -55,10 +51,10 @@
             Assert.AreEqual(result.PubEndDate, (string.Empty));
         }
 
-        [TestMethod]
+        [Test]
         public void Index_GivenScheduleNoteObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new SearchView(PermissionManager.Object);
+            var view = new SearchView(McmRepository.Object);
             var obj = Make_ScheduleNote_Object();
 
             var result = (SearchViewData)view.Index(obj).First();
@@ -73,7 +69,7 @@
             Assert.AreEqual(result.PubEndDate, (string.Empty));
         }
 
-        [TestMethod]
+        [Test]
         public void GetIndexableFields_GivenSearchViewData_ReturnTitleField()
         {
             var data = new SearchViewData
@@ -96,7 +92,7 @@
             Assert.AreEqual(result.First(item => item.Key == "PubEndDate").Value, ("2012-02-22T00:03:00"));
         }
 
-        [TestMethod]
+        [Test]
         public void DateTimeHelper_ParseAndFormatDate()
         {
             string datestring = "1056-11-13T00:00:00";

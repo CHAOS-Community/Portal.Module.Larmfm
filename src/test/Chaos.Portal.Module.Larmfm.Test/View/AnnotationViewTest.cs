@@ -2,30 +2,25 @@
 namespace Chaos.Portal.Module.Larmfm.Test.View
 {
     using System;
-    using System.Collections.Generic;
 
     using CHAOS;
     using CHAOS.Extensions;
-    using Mcm.Permission;
-    using Moq;
     using System.Xml.Linq;
     using Mcm.Data.Dto;
     using System.Linq;
     using Larmfm.View;
+    using NUnit.Framework;
     using Object = Mcm.Data.Dto.Object;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
 
-    [TestClass]
-    public class AnnotationViewTest
+    [TestFixture]
+    public class AnnotationViewTest : TestBase
     {
-        Mock<IPermissionManager> PermissionManager = new Mock<IPermissionManager>();
-
-        [TestMethod]
+        [Test]
         public void Index_GivenAnnotationObject_ReturnViewDataWithPropertiesSet()
         {
-            var view = new AnnotationView(PermissionManager.Object);
+            var view = new AnnotationView(McmRepository.Object);
             var obj = Make_Annotation_Object();
+            McmRepository.Setup(m => m.ObjectGet(new Guid("fe5c76fa-6f74-4604-a2de-ab2bd03a3cba"), true, true, true, true, true)).Returns(Make_UserObject());
 
             var result = (AnnotationViewData)view.Index(obj).First();
 
@@ -34,18 +29,19 @@ namespace Chaos.Portal.Module.Larmfm.Test.View
             Assert.AreEqual(result.Title, "Kashmir");
         }
 
-        [TestMethod]
+        [Test]
         public void Index_GivenAnnotationObject_ReturnIndexableFields()
         {
-            var view = new AnnotationView(PermissionManager.Object);
+            var view = new AnnotationView(McmRepository.Object);
             var obj = Make_Annotation_Object();
+            McmRepository.Setup(m => m.ObjectGet(new Guid("fe5c76fa-6f74-4604-a2de-ab2bd03a3cba"), true, true, true, true, true)).Returns(Make_UserObject());
 
             var annotationView = (AnnotationViewData)view.Index(obj).First();
 
             var indexableFields = annotationView.GetIndexableFields();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Convert_Timecode_to_Seconds()
         {
             string time = "00:58:05.5360000";
@@ -61,7 +57,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.View
                 Guid = Guid.Parse("63a0348b-ab4b-8847-9c71-2d0b4771b0fe"),
                 ObjectTypeID = 64,
                 DateCreated = new DateTime(2013, 10, 12, 22, 10, 10),
-                Metadatas = new List<Metadata>
+                Metadatas = new []
                         {
                             new Metadata
                                 {
@@ -71,6 +67,28 @@ namespace Chaos.Portal.Module.Larmfm.Test.View
                                     LanguageCode        = "da",
                                     RevisionID          = 1,
                                     DateCreated         = new DateTime(2013, 12, 01, 21, 05, 15)
+                                }
+                        },
+                        ObjectRelationInfos = new []
+                            {
+                                new ObjectRelationInfo
+                                    {
+                                        Object1Guid = new Guid("10000000-0000-0000-0000-000000000001")
+                                    }
+                            }
+            };
+        }
+
+        private Object Make_UserObject()
+        {
+            return new Object
+            {
+                Guid = Guid.Parse("fe5c76fa-6f74-4604-a2de-ab2bd03a3cba"),
+                Metadatas = new[]
+                        {
+                            new Metadata
+                                {
+                                    MetadataXml         = XDocument.Parse(@"<xml><Name>some name</Name></xml>"),
                                 }
                         }
             };

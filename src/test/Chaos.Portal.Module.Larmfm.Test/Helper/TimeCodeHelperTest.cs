@@ -1,16 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chaos.Portal.Module.Larmfm.Test.Helper
+﻿namespace Chaos.Portal.Module.Larmfm.Test.Helper
 {
-    [TestClass]
+    using System;
+    using NUnit.Framework;
+
+    [TestFixture]
     public class TimeCodeHelperTest
     {
-        [TestMethod]
+        [Test]
         public void Should_Convert_To_TimeCode()
         {
             var dtFrom = new DateTime(2008, 10, 10, 12, 0, 0);
@@ -22,7 +18,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Helper
             Assert.AreEqual("00:35:12", result);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Convert_Timecode_To_Seconds()
         {
             var result = Helpers.TimeCodeHelper.ConvertTimeCodeToSec("01:50:31.1000000");
