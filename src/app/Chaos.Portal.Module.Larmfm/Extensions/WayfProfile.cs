@@ -17,10 +17,10 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 		public IMcmRepository McmRepository { get; set; }
 		public LarmConfiguration Configuration { get; set; }
 
-		public WayfProfile(IPortalApplication portalApplication, ILarmModule larmModule) : base(portalApplication)
+        public WayfProfile(IPortalApplication portalApplication, IMcmRepository repository, LarmConfiguration configuration) : base(portalApplication)
 		{
-			McmRepository = larmModule.McmRepository;
-			Configuration = larmModule.Configuration;
+			McmRepository = repository;
+            Configuration = configuration;
 		}
 
 		public ScalarResult Update(Guid userGuid, string attributes)

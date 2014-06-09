@@ -1,11 +1,10 @@
-﻿using Chaos.Mcm;
-using Chaos.Mcm.Data;
-
-namespace Chaos.Portal.Module.Larmfm
+﻿namespace Chaos.Portal.Module.Larmfm
 {
-	public interface ILarmModule : IMcmModule
+    using Core.Module;
+    using Mcm.Data;
+
+    public interface ILarmModule : IModuleConfig
 	{
 		LarmConfiguration Configuration { get; set; }
-		IMcmRepository McmRepository { get; }
 	}
 }

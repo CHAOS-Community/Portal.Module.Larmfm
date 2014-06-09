@@ -32,7 +32,6 @@
             Assert.AreEqual(result.PubEndDate, Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-22T00:03:00"));
         }
 
-
         [Test]
         public void Index_GivenScheduleObject_ReturnViewDataWithPropertiesSet()
         {

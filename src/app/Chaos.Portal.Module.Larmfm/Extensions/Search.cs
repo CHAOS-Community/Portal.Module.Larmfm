@@ -1,11 +1,13 @@
-﻿using System;
-using Chaos.Portal.Core;
-using Chaos.Portal.Core.Data.Model;
-using Chaos.Portal.Core.Extension;
-using Chaos.Portal.Core.Indexing.Solr.Request;
-
-namespace Chaos.Portal.Module.Larmfm.Extensions
+﻿namespace Chaos.Portal.Module.Larmfm.Extensions
 {
+    using System;
+    using System.Linq;
+
+    using Core;
+    using Core.Data.Model;
+    using Core.Extension;
+    using Core.Indexing.Solr.Request;
+
     public class Search : AExtension
     {
         public Search(IPortalApplication portalApplication)
@@ -21,6 +23,20 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
         public IPagedResult<IResult> DateRange(string query, DateTime start, DateTime end)
         {
             return ViewManager.GetView("Search").Query(new SolrQuery { Query = query /* more advanced query, Filter = ... */ });
+        }
+
+        public QueryResult Facet(string query, string facetField)
+        {
+            var q = new SolrQuery
+                {
+                    Query = query,
+                    Facet = string.Format("field:{0}", facetField)
+                };
+            
+            var result = ViewManager.GetView("Search").FacetedQuery(q);
+            var fieldFacets = result.FacetFieldsResult.Select(item => new FieldFacet(item.Value, item.Facets.Select(facet => new Core.Data.Model.Facet(facet.Value, facet.Count)).ToList()));
+
+            return new QueryResult { FieldFacets = fieldFacets.ToList() };
         }
     }
 }

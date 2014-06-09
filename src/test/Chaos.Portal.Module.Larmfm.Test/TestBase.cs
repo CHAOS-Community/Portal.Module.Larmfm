@@ -29,7 +29,6 @@ namespace Chaos.Portal.Module.Larmfm.Test
 
 			PortalApplication.SetupGet(p => p.PortalRepository).Returns(PortalRepository.Object);
 			LarmModule.SetupGet(m => m.Configuration).Returns(Configuration);
-			LarmModule.SetupGet(m => m.McmRepository).Returns(McmRepository.Object);
 		}
 
 		private LarmConfiguration Make_Configuration()

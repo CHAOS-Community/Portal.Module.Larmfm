@@ -1,6 +1,7 @@
 _ReSharper*
 
 bin
+build
 !/tools/*/bin
 !/bin
 !/lib/*.dll

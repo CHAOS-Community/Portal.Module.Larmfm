@@ -142,7 +142,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 
 		private WayfProfile Make_WayfProfileExtension()
 		{
-			return (WayfProfile)new WayfProfile(PortalApplication.Object, LarmModule.Object).WithPortalRequest(PortalRequest.Object);
+			return (WayfProfile)new WayfProfile(PortalApplication.Object, McmRepository.Object, Configuration).WithPortalRequest(PortalRequest.Object);
 		}
 	}
 }
