@@ -8,6 +8,20 @@ namespace Chaos.Portal.Module.Larmfm
 		public Guid UserProfileMetadataSchemaGuid { get; set; }
 		public string UsersFolder { get; set; }
 		public uint UserFolderTypeId { get; set; } 
-		public uint UserObjectTypeId { get; set; } 
+		public uint UserObjectTypeId { get; set; }
+
+	    public AwsSettings Aws { get; set; }
+
+	    public LarmConfiguration()
+	    {
+	        Aws = new AwsSettings();
+	    }
+
+	    public class AwsSettings
+	    {
+            public string UploadBucket { get; set; }
+            public string ApiKey { get; set; }
+            public string ApiSecret { get; set; }
+	    }
 	}
 }

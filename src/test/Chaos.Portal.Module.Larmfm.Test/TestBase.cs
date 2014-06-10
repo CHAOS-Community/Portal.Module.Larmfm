@@ -8,13 +8,15 @@ using NUnit.Framework;
 
 namespace Chaos.Portal.Module.Larmfm.Test
 {
-	public class TestBase
+    using Domain;
+
+    public class TestBase
 	{
 		protected Mock<IPortalApplication> PortalApplication { get; set; }
 		protected Mock<IPortalRequest> PortalRequest { get; set; }
 		protected Mock<IPortalRepository> PortalRepository { get; set; }
 		protected Mock<IMcmRepository> McmRepository { get; set; }
-		protected Mock<ILarmModule> LarmModule { get; set; }
+        protected Mock<IStorage> StorageMock { get; set; }
 		protected LarmConfiguration Configuration { get; set; }
 
 		[SetUp]
@@ -24,14 +26,13 @@ namespace Chaos.Portal.Module.Larmfm.Test
 			PortalRequest = new Mock<IPortalRequest>();
 			PortalRepository = new Mock<IPortalRepository>();
 			McmRepository = new Mock<IMcmRepository>();
-			LarmModule = new Mock<ILarmModule>();
+            StorageMock = new Mock<IStorage>();
 			Configuration = Make_Configuration();
 
 			PortalApplication.SetupGet(p => p.PortalRepository).Returns(PortalRepository.Object);
-			LarmModule.SetupGet(m => m.Configuration).Returns(Configuration);
 		}
 
-		private LarmConfiguration Make_Configuration()
+	    public LarmConfiguration Make_Configuration()
 		{
 			return new LarmConfiguration
 			{

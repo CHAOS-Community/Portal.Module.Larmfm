@@ -10,8 +10,7 @@
 
     public class Search : AExtension
     {
-        public Search(IPortalApplication portalApplication)
-            : base(portalApplication)
+        public Search(IPortalApplication portalApplication) : base(portalApplication)
         {
         }
 

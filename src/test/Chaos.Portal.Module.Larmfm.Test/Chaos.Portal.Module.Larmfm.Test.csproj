@@ -55,6 +55,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\UploadTest.cs" />
     <Compile Include="Extensions\WayfProfileTest.cs" />
     <Compile Include="Helper\TimeCodeHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
