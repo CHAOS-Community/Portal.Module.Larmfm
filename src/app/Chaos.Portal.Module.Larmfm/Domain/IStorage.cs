@@ -4,6 +4,6 @@
 
     public interface IStorage
     {
-        void Write(string path, Stream stream);
+        void Write(string key, Stream stream);
     }
 }

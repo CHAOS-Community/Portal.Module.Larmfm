@@ -28,8 +28,8 @@
                             Aws = new LarmConfiguration.AwsSettings
                                 {
                                     UploadBucket = "larm-upload",
-                                    ApiKey = "",
-                                    ApiSecret = ""
+                                    AccessKey = "",
+                                    SecretAccessKey = ""
                                 }
                         };
                     var s3 = new S3(configuration.Aws);

@@ -20,8 +20,8 @@ namespace Chaos.Portal.Module.Larmfm
 	    public class AwsSettings
 	    {
             public string UploadBucket { get; set; }
-            public string ApiKey { get; set; }
-            public string ApiSecret { get; set; }
+            public string AccessKey { get; set; }
+            public string SecretAccessKey { get; set; }
 	    }
 	}
 }

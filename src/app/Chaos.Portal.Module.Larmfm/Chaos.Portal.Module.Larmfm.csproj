@@ -36,7 +36,7 @@
   <ItemGroup>
     <Reference Include="AWSSDK, Version=1.5.5.1, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\AWSSDK.dll</HintPath>
+      <HintPath>..\..\..\packages\AWSSDK.2.1.2.0\lib\net45\AWSSDK.dll</HintPath>
     </Reference>
     <Reference Include="CHAOS">
       <HintPath>..\..\..\lib\CHAOS.dll</HintPath>
@@ -91,7 +91,9 @@
     <Compile Include="View\ObjectView.cs" />
     <Compile Include="View\SearchView.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
