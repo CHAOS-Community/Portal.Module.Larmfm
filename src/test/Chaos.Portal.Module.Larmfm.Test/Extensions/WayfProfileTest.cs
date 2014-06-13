@@ -33,9 +33,9 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 			PortalRequest.SetupGet(r => r.User).Returns(Make_UserManager());
 			PortalRepository.Setup(r => r.UserInfoGet(user.Guid, null, null, null)).Returns(new List<UserInfo>{user});
 			McmRepository.Setup(r => r.FolderGet(null, null, null)).Returns(Make_Folders());
-			McmRepository.Setup(r => r.FolderCreate(user.Guid, null, user.Guid.ToString(), 90, Configuration.UserFolderTypeId)).Returns(userFolder.ID).Verifiable();
-			McmRepository.Setup(r => r.ObjectCreate(user.Guid, Configuration.UserObjectTypeId, userFolder.ID)).Returns(1).Verifiable();
-			McmRepository.Setup(r => r.MetadataSet(user.Guid, It.IsAny<Guid>(), Configuration.UserProfileMetadataSchemaGuid, Configuration.UserProfileLanguageCode, 0, It.Is<XDocument>(x => x.ToString(SaveOptions.DisableFormatting) == CHAOS_PROFILE), user.Guid)).Returns(1).Verifiable();
+			McmRepository.Setup(r => r.FolderCreate(user.Guid, null, user.Guid.ToString(), 90, Settings.UserFolderTypeId)).Returns(userFolder.ID).Verifiable();
+			McmRepository.Setup(r => r.ObjectCreate(user.Guid, Settings.UserObjectTypeId, userFolder.ID)).Returns(1).Verifiable();
+			McmRepository.Setup(r => r.MetadataSet(user.Guid, It.IsAny<Guid>(), Settings.UserProfileMetadataSchemaGuid, Settings.UserProfileLanguageCode, 0, It.Is<XDocument>(x => x.ToString(SaveOptions.DisableFormatting) == CHAOS_PROFILE), user.Guid)).Returns(1).Verifiable();
 
 			var result = extension.Update(user.Guid, WAYF_ATTRIBUTES);
 
@@ -57,7 +57,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 			var existingMetadata = new Metadata
 			{
 				Guid = new Guid("70a0348b-ab4b-8847-9c71-2d0b4771b0ff"),
-				MetadataSchemaGuid = Configuration.UserProfileMetadataSchemaGuid,
+				MetadataSchemaGuid = Settings.UserProfileMetadataSchemaGuid,
 				MetadataXml = XDocument.Parse("<CHAOS.Profile></CHAOS.Profile>"),
 				RevisionID = 3
 			};
@@ -74,7 +74,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 			PortalRequest.SetupGet(r => r.User).Returns(Make_UserManager());
 			PortalRepository.Setup(r => r.UserInfoGet(user.Guid, null, null, null)).Returns(new List<UserInfo> { user });
 			McmRepository.Setup(r => r.ObjectGet(user.Guid, true, false, false, false, false)).Returns(userObject).Verifiable();
-			McmRepository.Setup(r => r.MetadataSet(user.Guid, existingMetadata.Guid, Configuration.UserProfileMetadataSchemaGuid, Configuration.UserProfileLanguageCode, 4, It.Is<XDocument>(x => x.ToString(SaveOptions.DisableFormatting) == CHAOS_PROFILE), user.Guid)).Returns(1).Verifiable();
+			McmRepository.Setup(r => r.MetadataSet(user.Guid, existingMetadata.Guid, Settings.UserProfileMetadataSchemaGuid, Settings.UserProfileLanguageCode, 4, It.Is<XDocument>(x => x.ToString(SaveOptions.DisableFormatting) == CHAOS_PROFILE), user.Guid)).Returns(1).Verifiable();
 
 			var result = extension.Update(user.Guid, WAYF_ATTRIBUTES);
 
@@ -96,7 +96,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 			var existingMetadata = new Metadata
 			{
 				Guid = new Guid("70a0348b-ab4b-8847-9c71-2d0b4771b0ff"),
-				MetadataSchemaGuid = Configuration.UserProfileMetadataSchemaGuid,
+				MetadataSchemaGuid = Settings.UserProfileMetadataSchemaGuid,
 				MetadataXml = XDocument.Parse(CHAOS_PROFILE),
 				RevisionID = 3
 			};
@@ -142,7 +142,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 
 		private WayfProfile Make_WayfProfileExtension()
 		{
-			return (WayfProfile)new WayfProfile(PortalApplication.Object, McmRepository.Object, Configuration).WithPortalRequest(PortalRequest.Object);
+			return (WayfProfile)new WayfProfile(PortalApplication.Object, McmRepository.Object, Settings).WithPortalRequest(PortalRequest.Object);
 		}
 	}
 }

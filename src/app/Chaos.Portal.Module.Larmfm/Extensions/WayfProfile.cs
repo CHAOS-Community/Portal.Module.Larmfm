@@ -15,12 +15,12 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 	public class WayfProfile : AExtension
 	{
 		public IMcmRepository McmRepository { get; set; }
-		public LarmConfiguration Configuration { get; set; }
+		public LarmSettings Settings { get; set; }
 
-        public WayfProfile(IPortalApplication portalApplication, IMcmRepository repository, LarmConfiguration configuration) : base(portalApplication)
+        public WayfProfile(IPortalApplication portalApplication, IMcmRepository repository, LarmSettings settings) : base(portalApplication)
 		{
 			McmRepository = repository;
-            Configuration = configuration;
+            Settings = settings;
 		}
 
 		public ScalarResult Update(Guid userGuid, string attributes)
@@ -36,14 +36,14 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);
 
 			var metadata = GetProfileMetadata(user.Email, attributesObject["cn"][0], attributesObject["organizationName"][0], attributesObject["eduPersonPrimaryAffiliation"][0], attributesObject["schacCountryOfCitizenship"][0]);
-			var existingMetadata = userObject.Metadatas == null ? null : userObject.Metadatas.FirstOrDefault(m => m.MetadataSchemaGuid == Configuration.UserProfileMetadataSchemaGuid);
+			var existingMetadata = userObject.Metadatas == null ? null : userObject.Metadatas.FirstOrDefault(m => m.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
 
 			if (existingMetadata == null || existingMetadata.MetadataXml.ToString(SaveOptions.DisableFormatting) != metadata)
 			{
 				var metadataGuid = existingMetadata == null ? Guid.NewGuid() : existingMetadata.Guid;
 				var revisionId = existingMetadata == null ? 0 : existingMetadata.RevisionID + 1;
 
-				if (McmRepository.MetadataSet(userObject.Guid, metadataGuid, Configuration.UserProfileMetadataSchemaGuid, Configuration.UserProfileLanguageCode, revisionId, XDocument.Parse(metadata), user.Guid) != 1)
+				if (McmRepository.MetadataSet(userObject.Guid, metadataGuid, Settings.UserProfileMetadataSchemaGuid, Settings.UserProfileLanguageCode, revisionId, XDocument.Parse(metadata), user.Guid) != 1)
 					throw new Exception("Failed to create user profile metadata");
 			}
 
@@ -67,17 +67,17 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 				if(folders == null)
 					throw new Exception("Failed to get folders");
 
-				var usersFolder = GetFolderFromPath(null, Configuration.UsersFolder.Split('/').ToList(), folders);
+				var usersFolder = GetFolderFromPath(null, Settings.UsersFolder.Split('/').ToList(), folders);
 
 				if(usersFolder == null)
 					throw new Exception("Failed to find users folder");
 
-				var folderId = McmRepository.FolderCreate(userGuid, null, userGuid.ToString(), usersFolder.ID, Configuration.UserFolderTypeId);
+				var folderId = McmRepository.FolderCreate(userGuid, null, userGuid.ToString(), usersFolder.ID, Settings.UserFolderTypeId);
 
-				if(McmRepository.ObjectCreate(userGuid, Configuration.UserObjectTypeId, folderId) != 1)
+				if(McmRepository.ObjectCreate(userGuid, Settings.UserObjectTypeId, folderId) != 1)
 					throw new Exception("Failed to create user object");
 
-				userObject = new Object {Guid = userGuid, ObjectTypeID = Configuration.UserObjectTypeId};
+				userObject = new Object {Guid = userGuid, ObjectTypeID = Settings.UserObjectTypeId};
 			}
 
 			return userObject;
