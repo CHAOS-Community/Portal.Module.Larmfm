@@ -1,5 +1,6 @@
 ﻿namespace Chaos.Portal.Module.Larmfm.IntegrationTest
 {
+    using System.Configuration;
     using System.IO;
     using Domain.Aws;
     using NUnit.Framework;
@@ -12,8 +13,8 @@
         {
             var s3 = new S3(new LarmSettings.AwsSettings
                 {
-                    AccessKey = "AKIAIYOKLADGSIR443GQ",
-                    SecretAccessKey = "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",
+                    AccessKey = ConfigurationManager.AppSettings["AccessKey"],
+                    SecretAccessKey = ConfigurationManager.AppSettings["SecretAccessKey"],
                     UploadBucket = "integrationtests"
                 });
 
@@ -27,8 +28,8 @@
         {
             var aws = new LarmSettings.AwsSettings
                 {
-                    AccessKey = "AKIAIYOKLADGSIR443GQ", 
-                    SecretAccessKey = "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", 
+                    AccessKey = ConfigurationManager.AppSettings["AccessKey"],
+                    SecretAccessKey = ConfigurationManager.AppSettings["SecretAccessKey"], 
                     UploadBucket = "integrationtests",
                     PipelineId = "1402593766282-xnnqcd",
                     PresetId = "1351620000001-300040"
