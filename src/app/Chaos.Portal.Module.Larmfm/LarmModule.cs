@@ -28,6 +28,7 @@
 
                     portalApplication.AddView(new SearchView(mcm.McmRepository), "larm-search");
                     portalApplication.AddView(new AnnotationView(mcm.McmRepository), "larm-annotation");
+                    portalApplication.AddView(new UserSearchView(), "larm-usersearch");
                     portalApplication.AddView(new ObjectView(mcm.PermissionManager), mcm.Configuration.ObjectCoreName, true);
                 };
         }

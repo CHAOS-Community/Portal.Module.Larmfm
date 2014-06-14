@@ -92,6 +92,7 @@
     <Compile Include="View\AnnotationView.cs" />
     <Compile Include="View\ObjectView.cs" />
     <Compile Include="View\SearchView.cs" />
+    <Compile Include="View\UserSearchView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

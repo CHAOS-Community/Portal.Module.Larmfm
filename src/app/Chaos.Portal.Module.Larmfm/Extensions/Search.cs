@@ -33,9 +33,21 @@
                 };
             
             var result = ViewManager.GetView("Search").FacetedQuery(q);
-            var fieldFacets = result.FacetFieldsResult.Select(item => new FieldFacet(item.Value, item.Facets.Select(facet => new Core.Data.Model.Facet(facet.Value, facet.Count)).ToList()));
+            var fieldFacets = result.FacetFieldsResult.Select(item => new FieldFacet(item.Value, item.Facets.Select(facet => new Facet(facet.Value, facet.Count)).ToList()));
 
             return new QueryResult { FieldFacets = fieldFacets.ToList() };
+        }
+
+        public IPagedResult<IResult> Users(string query)
+        {
+
+            var q = new SolrQuery
+                {
+                    Query = ""
+                };
+            var results = ViewManager.GetView("Users").Query(q);
+
+            return new PagedResult<IResult>(0,0, null);
         }
     }
 }
