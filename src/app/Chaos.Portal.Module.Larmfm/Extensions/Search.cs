@@ -38,16 +38,17 @@
             return new QueryResult { FieldFacets = fieldFacets.ToList() };
         }
 
-        public IPagedResult<IResult> Users(string query)
+        public IPagedResult<IResult> Users(string name, uint pageIndex = 0, uint pageSize = 10)
         {
-
             var q = new SolrQuery
                 {
-                    Query = ""
+                    Query = string.Format("(Name:{0}*)(Name_split:{0}*)", name.ToLower().Replace(" ", "\\ ")),
+                    PageIndex = pageIndex,
+                    PageSize = pageSize
                 };
-            var results = ViewManager.GetView("Users").Query(q);
+            var results = ViewManager.GetView("UserSearch").Query(q);
 
-            return new PagedResult<IResult>(0,0, null);
+            return results;
         }
     }
 }

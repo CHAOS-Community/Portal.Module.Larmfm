@@ -35,6 +35,17 @@
         }
 
         [Test]
+        public void Index_MissingMetadata_Ignore()
+        {
+            var view = new UserSearchView();
+            var wrongObjectType = new Object{ObjectTypeID = 55};
+
+            var results = view.Index(wrongObjectType);
+
+            Assert.That(results, Is.Empty);
+        }
+
+        [Test]
         public void Index_GivenProfileObject_MapToUserSearchViewData()
         {
             var view = new UserSearchView();
@@ -90,7 +101,7 @@
             var fields = viewData.GetIndexableFields().ToDictionary(item => item.Key);
 
             Assert.That(fields["Id"].Value, Is.EqualTo(viewData.Id));
-            Assert.That(fields["Name"].Value, Is.EqualTo(viewData.Name));
+            Assert.That(fields["Name"].Value, Is.EqualTo("john doe"));
         }
     }
 }
