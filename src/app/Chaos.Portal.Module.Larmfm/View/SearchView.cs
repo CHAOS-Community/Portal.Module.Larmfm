@@ -43,32 +43,10 @@
             switch (obj.ObjectTypeID)
             {
                 case RadioObjectId:
-                    {
-                        var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
+                {
+                    data = CreateRadioSearchViewData(obj, data);
 
-                        var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
-                        
-                        if (metadata == null) return new List<IViewData>();
-
-                        var larmmetadataString = "";
-
-                        if(larmmetadata != null) larmmetadataString = MetadataHelper.GetXmlContent(larmmetadata.MetadataXml);
-
-                        data.Title = GetMetadata(metadata.MetadataXml, "Title");
-                        data.Channel = GetMetadata(metadata.MetadataXml, "PublicationChannel");
-                        data.Type = "Radio";
-                        data.FreeText = metadata.MetadataXml.Root.Value + " " + larmmetadataString;
-                        data.PubStartDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime"));
-                        data.PubEndDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
-                        data.Duration = TimeCodeHelper.ConvertToTimeCode(data.PubStartDate, data.PubEndDate);
-                        data.DurationSec = TimeCodeHelper.ConvertToDurationInSec(data.PubStartDate, data.PubEndDate).ToString();
-                        data.ThumbUrl = MetadataHelper.GetUrl(obj, "Thumbnail");
-                        if (obj.ObjectRelationInfos != null)
-                        {
-                            data.AnnotationCount = obj.ObjectRelationInfos.Count(robj => robj.Object2TypeID == AnnotationObjectId).ToString();
-                            data.AttachedFilesCount = obj.ObjectRelationInfos.Count(robj => robj.Object2TypeID == AttachedFileObjectId).ToString();
-                            data.FreeTextAnnotation = GetRelatedObjectsFreeText(obj);
-                        }
+                    if (data == null) return new List<IViewData>();
 
                         break;
                     }
@@ -86,6 +64,18 @@
                         FillSchedule(obj, data, metadata, "ScheduleNote");
                         break;
                     }
+
+                case AnnotationObjectId:
+                {
+                    //Get Radio object
+                    var radioObjectGuid = obj.ObjectRelationInfos.First(o => o.Object1TypeID == RadioObjectId).Object1Guid;
+                    var radioObject = Repository.ObjectGet(radioObjectGuid, true, true, true);
+
+                    //Index RadioObject
+                    data = CreateRadioSearchViewData(radioObject, data);
+
+                    break;
+                }
                 default :
                     return new List<IViewData>();
             }
@@ -94,6 +84,37 @@
             data.Id = obj.Guid.ToString();
 
             return new[] { data };
+        }
+
+        private SearchViewData CreateRadioSearchViewData(Mcm.Data.Dto.Object obj, SearchViewData data)
+        {
+            var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
+
+            var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
+
+            if (metadata == null) return null;
+
+            var larmmetadataString = "";
+
+            if (larmmetadata != null) larmmetadataString = MetadataHelper.GetXmlContent(larmmetadata.MetadataXml);
+
+            data.Title = GetMetadata(metadata.MetadataXml, "Title");
+            data.Channel = GetMetadata(metadata.MetadataXml, "PublicationChannel");
+            data.Type = "Radio";
+            data.FreeText = metadata.MetadataXml.Root.Value + " " + larmmetadataString;
+            data.PubStartDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime"));
+            data.PubEndDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
+            data.Duration = TimeCodeHelper.ConvertToTimeCode(data.PubStartDate, data.PubEndDate);
+            data.DurationSec = TimeCodeHelper.ConvertToDurationInSec(data.PubStartDate, data.PubEndDate).ToString();
+            data.ThumbUrl = MetadataHelper.GetUrl(obj, "Thumbnail");
+            if (obj.ObjectRelationInfos != null)
+            {
+                data.AnnotationCount = obj.ObjectRelationInfos.Count(robj => robj.Object2TypeID == AnnotationObjectId).ToString();
+                data.AttachedFilesCount = obj.ObjectRelationInfos.Count(robj => robj.Object2TypeID == AttachedFileObjectId).ToString();
+                data.FreeTextAnnotation = GetRelatedObjectsFreeText(obj);
+            }
+
+            return data;
         }
 
         private string GetRelatedObjectsFreeText(Chaos.Mcm.Data.Dto.Object obj)
