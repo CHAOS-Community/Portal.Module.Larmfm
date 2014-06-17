@@ -98,6 +98,8 @@
 
             if (larmmetadata != null) larmmetadataString = MetadataHelper.GetXmlContent(larmmetadata.MetadataXml);
 
+            data.HasLarmMetadata = !string.IsNullOrEmpty(larmmetadataString);
+
             data.Title = GetMetadata(metadata.MetadataXml, "Title");
             data.Channel = GetMetadata(metadata.MetadataXml, "PublicationChannel");
             data.Type = "Radio";
@@ -184,10 +186,11 @@
 
             if (!string.IsNullOrEmpty(PubStartDate))
                 yield return new KeyValuePair<string, string>("PubStartDate", PubStartDate);
+
             if (!string.IsNullOrEmpty(PubEndDate))
                 yield return new KeyValuePair<string, string>("PubEndDate", PubEndDate);
             
-            if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText);
+            if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText + " " + FreeTextAnnotation);
 
             if (!string.IsNullOrEmpty(Channel)) yield return new KeyValuePair<string, string>("Channel", Channel);
 
@@ -196,6 +199,25 @@
             if (!string.IsNullOrEmpty(AnnotationCount)) yield return new KeyValuePair<string, string>("AnnotationCount", AnnotationCount);
 
             if (!string.IsNullOrEmpty(AttachedFilesCount)) yield return new KeyValuePair<string, string>("AttachedFilesCount", AttachedFilesCount);
+
+            //UserContentToken -------------------------------------------------------------------------------------------->
+
+            var aCount = 0;
+            var aFileCount = 0;
+
+            if((!string.IsNullOrEmpty(AnnotationCount)))
+                if(int.TryParse(AnnotationCount, out aCount))
+                    if(aCount > 0)
+                        yield return new KeyValuePair<string, string>("UserContentToken", "Annotation");
+
+            if ((!string.IsNullOrEmpty(AttachedFilesCount)))
+                if (int.TryParse(AttachedFilesCount, out aFileCount))
+                    if (aFileCount > 0)
+                        yield return new KeyValuePair<string, string>("UserContentToken", "Attached file");
+
+            if ((HasLarmMetadata)) yield return new KeyValuePair<string, string>("UserContentToken", "LARM Metadata");
+
+            // ------------------------------------------------------------------------------------------------------------->
 
             if (ObjectFolders != null)
                 foreach (var objectFolder in ObjectFolders)
@@ -235,6 +257,10 @@
 
         [Serialize]
         public string AttachedFilesCount { get; set; }
+
+        public string UserContentToken { get; set; }
+
+        public bool HasLarmMetadata { get; set; }
 
         public string FreeText { get; set; }
 

@@ -123,10 +123,41 @@
                             new Metadata
                                 {
                                     MetadataSchemaGuid = Guid.Parse("17d59e41-13fb-469a-a138-bb691f13f2ba"),
-                                    MetadataXml = XDocument.Parse(@"<Larm.Metadata><Title></Title><Description>Montage fra åbningen af Christianias urtehospital, hvor man hører behandlere, patienter og gæster. Hunden Sofus piber, da den behandles. Drengen Christian får at vide, at han skal spise hvidløg og propolis for at komme af med sin halsbetændelse. En pige tjekkes for lus. En anden får et råd om blomsten Arnica, som styrker kredsløbet. En medarbejder fortæller om økonomien. Folk opfordres til at lægge en skilling. Medarbejderne betragter urtehospitalet som et lærested, de får indtil videre ikke løn. En jordemoder fortæller om sit arbejde. Pludselig får hun besøg af en mor og en baby. Babyen lå den gale vej, da hun skulle fødes. Så er der en samtale om øret. En medarbejder ser sammen med en rigtig læge på en betændt negl og diskuterer behandling. Nogle indbudte gæster giver deres forskellige meninger om urtehospitalet. En medarbejder fortæller, at de i første omgang ikke vil have nogen patienter indlagt. Stedet er åbent for alle christianitter. Man kan få urtebehandling, zoneterapi, massage, fodbade mm. Nogle medarbejdere er uddannede, andre har bare en masse erfaring. De sender ting, de ikke kan klare, videre til hospitalet. Så er der spillemandsmusik. En medarbejder fortæller, at de gerne vil arbejde for at forebygge sygdomme og hjælpe folk til selvhjælp.                                                                             Peter Kristiansen, tilrettelægger / Christian, patient med halsbetændeler</Description><Genre></Genre><Subjects></Subjects><Tags></Tags><Note></Note><RelatedObjects></RelatedObjects><Contributors /></Larm.Metadata>
+                                    MetadataXml = XDocument.Parse(@"<Larm.Metadata><Title></Title><Description>Montage fra åbningen af Christianias urtehospital, hvor man hører behandlere, patienter og gæster. Hunden Sofus piber, da den behandles. Drengen Christian får at vide, at han skal spise hvidløg og propolis for at komme af med sin halsbetændelse. En pige tjekkes for lus. En anden får et råd om blomsten Arnica, som styrker kredsløbet. En medarbejder fortæller om økonomien. Folk opfordres til at lægge en skilling. Medarbejderne betragter urtehospitalet som et lærested, de får indtil videre ikke løn. En jordemoder fortæller om sit arbejde. Pludselig får hun besøg af en mor og en baby. Babyen lå den gale vej, da hun skulle fødes. Så er der en samtale om øret. En medarbejder ser sammen med en rigtig læge på en betændt negl og diskuterer behandling. Nogle indbudte gæster giver deres forskellige meninger om urtehospitalet. En medarbejder fortæller, at de i første omgang ikke vil have nogen patienter indlagt. Stedet er åbent for alle christianitter. Man kan få urtebehandling, zoneterapi, massage, fodbade mm. Nogle medarbejdere er uddannede, andre har bare en masse erfaring. De sender ting, de ikke kan klare, videre til hospitalet. Så er der spillemandsmusik. En medarbejder fortæller, at de gerne vil arbejde for at forebygge sygdomme og hjælpe folk til selvhjælp.
+ 
+                                                                            Peter Kristiansen, tilrettelægger / Christian, patient med halsbetændeler</Description><Genre></Genre><Subjects></Subjects><Tags></Tags><Note></Note><RelatedObjects></RelatedObjects><Contributors /></Larm.Metadata>
                                                                             ")
                                 }
+                        },
+                        ObjectRelationInfos = new List<ObjectRelationInfo>
+                        {
+                            //Annotation 1
+                            new ObjectRelationInfo
+                            {
+                                Object1Guid = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                                Object1TypeID = 24,
+                                Object2Guid = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                                ObjectRelationTypeID = 64
+                            },
+                            //Annotation 2
+                             new ObjectRelationInfo
+                            {
+                                Object1Guid = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                                Object1TypeID = 24,
+                                Object2Guid = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                                ObjectRelationTypeID = 64
+                            },
+                            //Attached File 1
+                             new ObjectRelationInfo
+                            {
+                                Object1Guid = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                                Object1TypeID = 24,
+                                Object2Guid = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                                ObjectRelationTypeID = 89
+                            }
+
                         }
+                        
                 };
         }
 
