@@ -136,15 +136,13 @@
             return string.Empty;
         }
 
-        private void FillSchedule(Mcm.Data.Dto.Object obj, SearchViewData data, Metadata metadata, string type)
+        private string GetAnnotationMetadata(Guid guid)
         {
-            var title = GetMetadata(metadata.MetadataXml, "Title");
-            data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
-            data.Type = type;
-            data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
-            data.Url = MetadataHelper.GetUrl(obj, "PDF");
-            data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
-            data.PubEndDate = string.Empty;
+            var metadata = Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.FirstOrDefault();
+
+            if (metadata == null) return string.Empty;
+
+            return MetadataHelper.GetXmlContent(metadata.MetadataXml);
         }
 
         private string GetMetadata(XDocument xroot, string field)
@@ -156,9 +154,15 @@
             return elm.Value;
         }
 
-        private string GetAnnotationMetadata(Guid guid)
+        private void FillSchedule(Mcm.Data.Dto.Object obj, SearchViewData data, Metadata metadata, string type)
         {
-            return MetadataHelper.GetXmlContent(Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.First().MetadataXml);
+            var title = GetMetadata(metadata.MetadataXml, "Title");
+            data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
+            data.Type = type;
+            data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
+            data.Url = MetadataHelper.GetUrl(obj, "PDF");
+            data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
+            data.PubEndDate = string.Empty;
         }
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
