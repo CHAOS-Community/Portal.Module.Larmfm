@@ -69,6 +69,20 @@
         }
 
         [Test]
+        public void Index_GivenObjectWithNoMetadata_ReturnEmptyList()
+        {
+            var view = new SearchView(McmRepository.Object);
+            var obj = new Object
+                {
+                    Guid = new Guid("10000000-0000-0000-0000-000000000001"),
+                    ObjectTypeID = 64
+                };
+
+            var result = view.Index(obj);
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
         public void GetIndexableFields_GivenSearchViewData_ReturnTitleField()
         {
             var data = new SearchViewData
@@ -86,7 +100,7 @@
             Assert.AreEqual(result.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), true);
             Assert.AreEqual(result.Any(item => item.Key == "Title" && item.Value == "P7 MIX"), true);
             Assert.AreEqual(result.Any(item => item.Key == "Type" && item.Value == "Radio"), true);
-            Assert.AreEqual(result.First(item => item.Key == "FreeText").Value, ("test text"));
+            Assert.AreEqual(result.First(item => item.Key == "FreeText").Value, ("test text "));
             Assert.AreEqual(result.First(item => item.Key == "PubStartDate").Value, ("2012-02-21T16:03:00"));
             Assert.AreEqual(result.First(item => item.Key == "PubEndDate").Value, ("2012-02-22T00:03:00"));
         }

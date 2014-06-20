@@ -68,8 +68,11 @@
                 case AnnotationObjectId:
                 {
                     //Get Radio object
-                    var radioObjectGuid = obj.ObjectRelationInfos.First(o => o.Object1TypeID == RadioObjectId).Object1Guid;
-                    var radioObject = Repository.ObjectGet(radioObjectGuid, true, true, true);
+                    var radioRelation = obj.ObjectRelationInfos.FirstOrDefault(o => o.Object1TypeID == RadioObjectId);
+                    
+                    if(radioRelation == null) return new List<IViewData>();
+
+                    var radioObject = Repository.ObjectGet(radioRelation.Object1Guid, true, true, true);
 
                     //Index RadioObject
                     data = CreateRadioSearchViewData(radioObject, data);
