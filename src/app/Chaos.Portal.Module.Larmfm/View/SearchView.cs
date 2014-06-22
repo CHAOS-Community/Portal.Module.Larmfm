@@ -127,16 +127,14 @@
             if (obj.ObjectRelationInfos == null)
                 return string.Empty;
 
-            var output = "";
+            var output = " ";
 
             foreach (var relatedObj in obj.ObjectRelationInfos.Where(robj => robj.Object2TypeID == AnnotationObjectId || robj.Object2TypeID == AttachedFileObjectId))
             {
                 output = output + GetAnnotationMetadata(relatedObj.Object2Guid);
             }
 
-            //TODO: Implement method
-
-            return string.Empty;
+            return output;
         }
 
         private string GetAnnotationMetadata(Guid guid)
