@@ -48,8 +48,8 @@
 
                     if (data == null) return new List<IViewData>();
 
-                        break;
-                    }
+                    break;
+                }
                 case ScheduleObjectId:
                     {
                         var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ScheduleMetadataSchemaGuid);
@@ -77,6 +77,8 @@
                     //Index RadioObject
                     data = CreateRadioSearchViewData(radioObject, data);
 
+                    if (data == null) return new List<IViewData>();
+
                     break;
                 }
                 default :
@@ -92,7 +94,6 @@
         private SearchViewData CreateRadioSearchViewData(Mcm.Data.Dto.Object obj, SearchViewData data)
         {
             var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
-
             var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
 
             if (metadata == null) return null;
