@@ -19,6 +19,8 @@
         private const int RadioObjectId    = 24;
         private const int ScheduleObjectId = 86;
         private const int ScheduleNoteObjectId = 87;
+        private const int SegmentedScheduleObjectId = 95;
+
         private const int AnnotationObjectId = 64;
         private const int AttachedFileObjectId = 89;
 
@@ -64,6 +66,35 @@
                         FillSchedule(obj, data, metadata, "ScheduleNote");
                         break;
                     }
+                case SegmentedScheduleObjectId:
+                {
+                    var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
+                    var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
+
+                    if (metadata == null) return null;
+
+                    var larmmetadataString = "";
+
+                    if (larmmetadata != null) larmmetadataString = MetadataHelper.GetXmlContent(larmmetadata.MetadataXml);
+
+                    data.HasLarmMetadata = !string.IsNullOrEmpty(larmmetadataString);
+
+                    data.Url = MetadataHelper.GetUrl(obj, "PDF");
+
+                    data.Title = GetMetadata(metadata.MetadataXml, "Title");
+                    data.Channel = GetMetadata(metadata.MetadataXml, "PublicationChannel");
+                    data.Type = "SegmentedSchedule";
+
+                    data.FreeText = metadata.MetadataXml.Root.Value + " " + larmmetadataString;
+                    data.PubStartDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime"));
+                    data.PubEndDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
+
+                    data.Duration = TimeCodeHelper.ConvertToTimeCode(data.PubStartDate, data.PubEndDate);
+                    data.DurationSec = TimeCodeHelper.ConvertToDurationInSec(data.PubStartDate, data.PubEndDate).ToString();
+
+
+                    break;
+                }
 
                 case AnnotationObjectId:
                 {
@@ -76,6 +107,9 @@
 
                     //Index RadioObject
                     data = CreateRadioSearchViewData(radioObject, data);
+
+                    //Index radioobject not the annotation object
+                    obj = radioObject;
 
                     if (data == null) return new List<IViewData>();
 
