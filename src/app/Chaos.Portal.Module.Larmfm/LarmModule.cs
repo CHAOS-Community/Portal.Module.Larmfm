@@ -26,9 +26,9 @@
                     portalApplication.MapRoute("/v6/WayfProfile", () => new WayfProfile(portalApplication, mcm.McmRepository, settings));
                     portalApplication.MapRoute("/v6/Upload", () => new Upload(portalApplication, mcm.McmRepository, s3, transcoder, settings));
 
-                    portalApplication.AddView(new SearchView(mcm.McmRepository), "larm-search");
-                    portalApplication.AddView(new AnnotationView(mcm.McmRepository), "larm-annotation");
-                    portalApplication.AddView(new UserSearchView(), "larm-usersearch");
+                    portalApplication.AddView(new SearchView(mcm.McmRepository), settings.Index.SearchCoreName);
+                    portalApplication.AddView(new AnnotationView(mcm.McmRepository), settings.Index.AnnotationCoreName);
+                    portalApplication.AddView(new UserSearchView(), settings.Index.UserSearchCoreName);
                     portalApplication.AddView(new ObjectView(mcm.PermissionManager), mcm.Configuration.ObjectCoreName, true);
                 };
         }

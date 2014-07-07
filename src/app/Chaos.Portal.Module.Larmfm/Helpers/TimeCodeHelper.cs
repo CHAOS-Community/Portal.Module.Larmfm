@@ -40,6 +40,8 @@ namespace Chaos.Portal.Module.Larmfm.Helpers
                 ConvertToDurationInSec(fromdt, todt)
                 );
 
+            
+
             return t.ToString(@"hh\:mm\:ss");
         }
 

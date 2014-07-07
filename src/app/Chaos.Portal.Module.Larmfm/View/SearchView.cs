@@ -19,6 +19,8 @@
         private const int RadioObjectId    = 24;
         private const int ScheduleObjectId = 86;
         private const int ScheduleNoteObjectId = 87;
+        private const int SegmentedScheduleObjectId = 95;
+
         private const int AnnotationObjectId = 64;
         private const int AttachedFileObjectId = 89;
 
@@ -48,8 +50,8 @@
 
                     if (data == null) return new List<IViewData>();
 
-                        break;
-                    }
+                    break;
+                }
                 case ScheduleObjectId:
                     {
                         var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ScheduleMetadataSchemaGuid);
@@ -64,6 +66,35 @@
                         FillSchedule(obj, data, metadata, "ScheduleNote");
                         break;
                     }
+                case SegmentedScheduleObjectId:
+                {
+                    var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
+                    var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
+
+                    if (metadata == null) return null;
+
+                    var larmmetadataString = "";
+
+                    if (larmmetadata != null) larmmetadataString = MetadataHelper.GetXmlContent(larmmetadata.MetadataXml);
+
+                    data.HasLarmMetadata = !string.IsNullOrEmpty(larmmetadataString);
+
+                    data.Url = MetadataHelper.GetUrl(obj, "PDF");
+
+                    data.Title = GetMetadata(metadata.MetadataXml, "Title");
+                    data.Channel = GetMetadata(metadata.MetadataXml, "PublicationChannel");
+                    data.Type = "SegmentedSchedule";
+
+                    data.FreeText = metadata.MetadataXml.Root.Value + " " + larmmetadataString;
+                    data.PubStartDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime"));
+                    data.PubEndDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
+
+                    data.Duration = TimeCodeHelper.ConvertToTimeCode(data.PubStartDate, data.PubEndDate);
+                    data.DurationSec = TimeCodeHelper.ConvertToDurationInSec(data.PubStartDate, data.PubEndDate).ToString();
+
+
+                    break;
+                }
 
                 case AnnotationObjectId:
                 {
@@ -76,6 +107,11 @@
 
                     //Index RadioObject
                     data = CreateRadioSearchViewData(radioObject, data);
+
+                    //Index radioobject not the annotation object
+                    obj = radioObject;
+
+                    if (data == null) return new List<IViewData>();
 
                     break;
                 }
@@ -126,27 +162,23 @@
             if (obj.ObjectRelationInfos == null)
                 return string.Empty;
 
-            var output = "";
+            var output = " ";
 
             foreach (var relatedObj in obj.ObjectRelationInfos.Where(robj => robj.Object2TypeID == AnnotationObjectId || robj.Object2TypeID == AttachedFileObjectId))
             {
                 output = output + GetAnnotationMetadata(relatedObj.Object2Guid);
             }
 
-            //TODO: Implement method
-
-            return string.Empty;
+            return output;
         }
 
-        private void FillSchedule(Mcm.Data.Dto.Object obj, SearchViewData data, Metadata metadata, string type)
+        private string GetAnnotationMetadata(Guid guid)
         {
-            var title = GetMetadata(metadata.MetadataXml, "Title");
-            data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
-            data.Type = type;
-            data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
-            data.Url = MetadataHelper.GetUrl(obj, "PDF");
-            data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
-            data.PubEndDate = string.Empty;
+            var metadata = Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.FirstOrDefault();
+
+            if (metadata == null) return string.Empty;
+
+            return MetadataHelper.GetXmlContent(metadata.MetadataXml);
         }
 
         private string GetMetadata(XDocument xroot, string field)
@@ -158,11 +190,15 @@
             return elm.Value;
         }
 
-        private string GetAnnotationMetadata(Guid guid)
+        private void FillSchedule(Mcm.Data.Dto.Object obj, SearchViewData data, Metadata metadata, string type)
         {
-            var metadata = Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.First();
-
-            return MetadataHelper.GetXmlContent(metadata.MetadataXml);
+            var title = GetMetadata(metadata.MetadataXml, "Title");
+            data.Title = string.IsNullOrEmpty(title) ? GetMetadata(metadata.MetadataXml, "Filename") : title;
+            data.Type = type;
+            data.FreeText = GetMetadata(metadata.MetadataXml, "AllText");
+            data.Url = MetadataHelper.GetUrl(obj, "PDF");
+            data.PubStartDate = Helpers.DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "Date"));
+            data.PubEndDate = string.Empty;
         }
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)

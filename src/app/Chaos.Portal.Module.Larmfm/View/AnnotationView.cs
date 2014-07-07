@@ -38,9 +38,15 @@
 
             if (metadata == null) return new List<IViewData>();
 
+            var title = GetMetadata(metadata.MetadataXml, "Title");
+
+            //If sound source schema
+            if(title == "")
+                title = GetMetadata(metadata.MetadataXml, "SoundSourceName");
+
             var data = new AnnotationViewData
             {
-                Title = GetMetadata(metadata.MetadataXml, "Title"),
+                Title = title,
                 MetadataSchemaGUID = metadata.MetadataSchemaGuid.ToString(),
                 StartTime = GetMetadataAttribute(metadata.MetadataXml, "StartTime"),
                 EndTime = GetMetadataAttribute(metadata.MetadataXml, "EndTime"),

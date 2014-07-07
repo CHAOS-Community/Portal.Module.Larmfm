@@ -16,9 +16,12 @@
 	    public uint UploadDestinationId { get; set; }
         public uint UploadFormatId { get; set; }
 
+        public IndexSettings Index { get; set; }
+
 	    public LarmSettings()
 	    {
 	        Aws = new AwsSettings();
+            Index = new IndexSettings();
 	    }
 
 	    public class AwsSettings
@@ -29,6 +32,13 @@
             public string PipelineId { get; set; }
 	        public string PresetId { get; set; }
 	    }
+
+        public class IndexSettings
+        {
+            public string SearchCoreName { get; set; }
+            public string AnnotationCoreName { get; set; }
+            public string UserSearchCoreName { get; set; }
+        }
 
         public bool IsValid()
         {
