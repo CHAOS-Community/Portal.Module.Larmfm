@@ -92,7 +92,6 @@
         private SearchViewData CreateRadioSearchViewData(Mcm.Data.Dto.Object obj, SearchViewData data)
         {
             var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
-
             var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
 
             if (metadata == null) return null;
@@ -161,7 +160,9 @@
 
         private string GetAnnotationMetadata(Guid guid)
         {
-            return MetadataHelper.GetXmlContent(Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.First().MetadataXml);
+            var metadata = Repository.ObjectGet(guid, true, true, true, true, true).Metadatas.First();
+
+            return MetadataHelper.GetXmlContent(metadata.MetadataXml);
         }
 
         public override Core.Data.Model.IPagedResult<Core.Data.Model.IResult> Query(Core.Indexing.IQuery query)
