@@ -1,4 +1,6 @@
-﻿namespace Chaos.Portal.Module.Larmfm.Extensions
+﻿using System.Xml.Linq;
+
+namespace Chaos.Portal.Module.Larmfm.Extensions
 {
     using System;
     using System.IO;
@@ -37,6 +39,17 @@
             Storage.Write(sourceKey, file.InputStream);
             Transcoder.Transcode(sourceKey, folderPath +  "/" + destinationFile);
             Repository.FileCreate(objectGuid, null, Settings.UploadDestinationId, destinationFile, file.FileName, folderPath, Settings.UploadFormatId);
+
+            Repository.MetadataSet(objectGuid,
+                Guid.NewGuid(),
+                new Guid("00000000-0000-0000-0000-0000dd820000"),
+                "da",
+                1,
+               XDocument.Parse("<Larm.FileInfos><Larm.FileInfo><StartOffSetMS>0</StartOffSetMS><EndOffSetMS>0</EndOffSetMS><FileName>"+destinationFile+"</FileName><Index>0</Index></Larm.FileInfo></Larm.FileInfos>"),
+                new Guid("34613336-3836-6163-2D33-3562392D3131"));
+
+            var obj = Repository.ObjectGet(objectGuid, true, true, true, true, true);
+            ViewManager.Index(obj);
 
             return EndpointResult.Success();
         }
