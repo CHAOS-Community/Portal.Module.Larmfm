@@ -18,6 +18,7 @@
             var program = Make_ProgramObject();
             var file = new FileStream(null, "name.ext", "audio/mp3", 1000);
             PortalRequest.Setup(m => m.Files).Returns(new[]{file});
+            PortalApplication.Setup(m => m.ViewManager.Index(null));
 
             upload.Full(program.Guid);
 

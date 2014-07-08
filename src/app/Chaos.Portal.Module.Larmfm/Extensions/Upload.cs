@@ -38,6 +38,9 @@
             Transcoder.Transcode(sourceKey, folderPath +  "/" + destinationFile);
             Repository.FileCreate(objectGuid, null, Settings.UploadDestinationId, destinationFile, file.FileName, folderPath, Settings.UploadFormatId);
 
+            var obj = Repository.ObjectGet(objectGuid, true, true, true, true, true);
+            ViewManager.Index(obj);
+
             return EndpointResult.Success();
         }
     }
