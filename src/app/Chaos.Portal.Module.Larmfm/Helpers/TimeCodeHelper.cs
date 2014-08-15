@@ -16,10 +16,13 @@ namespace Chaos.Portal.Module.Larmfm.Helpers
                
 
             //Check if both can be parsed as datetimes
-            if (!DateTime.TryParse(fromdt, out dtFrom) && !DateTime.TryParse(todt, out dtTo))
+            if (!DateTime.TryParse(fromdt, out dtFrom))
                 return string.Empty;
 
-            if (dtTo.CompareTo(dtFrom) > 0)
+            if (!DateTime.TryParse(todt, out dtTo))
+                return string.Empty;
+
+            if (dtFrom > dtTo)
                 return string.Empty;
 
             return ConvertToTimeCode(dtFrom, dtTo);
@@ -41,20 +44,23 @@ namespace Chaos.Portal.Module.Larmfm.Helpers
                 );
 
             
-
             return t.ToString(@"hh\:mm\:ss");
         }
 
         public static uint ConvertToDurationInSec(string fromdt, string todt)
         {
-            DateTime dtFrom = DateTime.MinValue;
-            DateTime dtTo = DateTime.MinValue;
+            var dtFrom = DateTime.MinValue;
+            var dtTo = DateTime.MinValue;
 
             //Check if both can be parsed as datetimes
-            if (!DateTime.TryParse(fromdt, out dtFrom) && !DateTime.TryParse(todt, out dtTo))
+            if (!DateTime.TryParse(fromdt, out dtFrom)) 
                 return 0;
 
-            if (dtTo.CompareTo(dtFrom) > 0)
+            if (!DateTime.TryParse(todt, out dtTo))
+                return 0;
+
+
+            if (dtFrom > dtTo)
                 return 0;
 
             return ConvertToDurationInSec(dtFrom, dtTo);

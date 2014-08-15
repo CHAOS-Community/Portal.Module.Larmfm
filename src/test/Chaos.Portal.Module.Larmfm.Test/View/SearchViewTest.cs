@@ -24,12 +24,28 @@
             var result = (SearchViewData) view.Index(obj).First();
 
             Assert.AreEqual(result.Id, "00000000-0000-0000-0000-000000000001");
-            Assert.AreEqual(result.Title, "P7 MIX");
+            Assert.AreEqual(result.Title, "EXPO 2005");
             Assert.AreEqual(result.Type, "Radio");
-            Assert.AreEqual(result.PubStartDate, "2012-02-21T16:03:00Z");
-            Assert.AreEqual(result.PubEndDate, "2012-02-22T00:03:00Z");
-            Assert.AreEqual(result.PubStartDate, (Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-21T16:03:00")));
-            Assert.AreEqual(result.PubEndDate, Helpers.DateTimeHelper.ParseAndFormatDate("2012-02-22T00:03:00"));
+            Assert.AreEqual(result.PubStartDate, "2005-08-10T12:00:00Z");
+            Assert.AreEqual(result.PubEndDate, "2005-08-10T12:05:00Z");
+            Assert.AreEqual(result.PubStartDate, (Helpers.DateTimeHelper.ParseAndFormatDate("2005-08-10T12:00:00Z")));
+            Assert.AreEqual(result.PubEndDate, Helpers.DateTimeHelper.ParseAndFormatDate("2005-08-10T12:05:00Z"));
+            Assert.AreEqual(result.Duration, "00:05:00");
+
+            var indexableFields = result.GetIndexableFields().ToList();
+
+            Assert.AreEqual(indexableFields.Any(item => item.Key == "Id" && item.Value == "00000000-0000-0000-0000-000000000001"), true);
+            Assert.AreEqual(indexableFields.Any(item => item.Key == "Title" && item.Value == "EXPO 2005"), true);
+
+            var fullText = indexableFields.First(item => item.Key == "FreeText").Value;
+
+            Assert.AreEqual(indexableFields.Any(item => item.Key == "Type" && item.Value == "Radio"), true);
+            Assert.AreEqual(indexableFields.First(item => item.Key == "FreeText").Value, ("2005-08-10T12:00:00Z\r\n2005-08-10T12:05:00Z\r\nDR, P1\r\nEXPO 2005\r\nShort piece for current culture program about EXPO in Nagoya, Japan\r\nthis is a test, dates are not factual\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n  "));
+            Assert.AreEqual(indexableFields.First(item => item.Key == "Duration").Value, ("300"));
+            Assert.AreEqual(indexableFields.First(item => item.Key == "PubStartDate").Value, ("2005-08-10T12:00:00Z"));
+            Assert.AreEqual(indexableFields.First(item => item.Key == "PubEndDate").Value, ("2005-08-10T12:05:00Z"));
+            
+
         }
 
         [Test]
@@ -132,14 +148,12 @@
                             new Metadata
                                 {
                                     MetadataSchemaGuid = Guid.Parse("00000000-0000-0000-0000-0000df820000"),
-                                    MetadataXml        = XDocument.Parse("<Larm.Program><PublicationDateTime>2012-02-21T16:03:00</PublicationDateTime><PublicationEndDateTime>2012-02-22T00:03:00</PublicationEndDateTime><PublicationChannel>DR P7 Mix</PublicationChannel><Title>P7 MIX</Title><Abstract></Abstract><Description>Musik med pop og sjæl. </Description><Publisher></Publisher><Subjects /><Contributors></Contributors><Creators><Creator><Name></Name><RoleName></RoleName><RoleID></RoleID></Creator></Creators><Locations /><Identifiers><DR.ProductionNumber></DR.ProductionNumber><DR.ArchiveNumber></DR.ArchiveNumber><SB.DomsID>c431cb1d-081a-47de-a7d4-cd4275a7063a</SB.DomsID></Identifiers></Larm.Program>")
+                                    MetadataXml        = XDocument.Parse("<Larm.Program><PublicationDateTime>2005-08-10T12:00:00Z</PublicationDateTime><PublicationEndDateTime>2005-08-10T12:05:00Z</PublicationEndDateTime><PublicationChannel>DR, P1</PublicationChannel><Title>EXPO 2005</Title><Abstract>Short piece for current culture program about EXPO in Nagoya, Japan</Abstract><Description>this is a test, dates are not factual</Description><Publisher /><Subjects /><Contributors /><Creators /><Locations /><Identifiers><DR.ProductionNumber /><DR.ArchiveNumber /><SB.DomsID /></Identifiers></Larm.Program>")
                                 },
                             new Metadata
                                 {
                                     MetadataSchemaGuid = Guid.Parse("17d59e41-13fb-469a-a138-bb691f13f2ba"),
-                                    MetadataXml = XDocument.Parse(@"<Larm.Metadata><Title></Title><Description>Montage fra åbningen af Christianias urtehospital, hvor man hører behandlere, patienter og gæster. Hunden Sofus piber, da den behandles. Drengen Christian får at vide, at han skal spise hvidløg og propolis for at komme af med sin halsbetændelse. En pige tjekkes for lus. En anden får et råd om blomsten Arnica, som styrker kredsløbet. En medarbejder fortæller om økonomien. Folk opfordres til at lægge en skilling. Medarbejderne betragter urtehospitalet som et lærested, de får indtil videre ikke løn. En jordemoder fortæller om sit arbejde. Pludselig får hun besøg af en mor og en baby. Babyen lå den gale vej, da hun skulle fødes. Så er der en samtale om øret. En medarbejder ser sammen med en rigtig læge på en betændt negl og diskuterer behandling. Nogle indbudte gæster giver deres forskellige meninger om urtehospitalet. En medarbejder fortæller, at de i første omgang ikke vil have nogen patienter indlagt. Stedet er åbent for alle christianitter. Man kan få urtebehandling, zoneterapi, massage, fodbade mm. Nogle medarbejdere er uddannede, andre har bare en masse erfaring. De sender ting, de ikke kan klare, videre til hospitalet. Så er der spillemandsmusik. En medarbejder fortæller, at de gerne vil arbejde for at forebygge sygdomme og hjælpe folk til selvhjælp.
- 
-                                                                            Peter Kristiansen, tilrettelægger / Christian, patient med halsbetændeler</Description><Genre></Genre><Subjects></Subjects><Tags></Tags><Note></Note><RelatedObjects></RelatedObjects><Contributors /></Larm.Metadata>
+                                    MetadataXml = XDocument.Parse(@"<Larm.Metadata><Title /><Description /><Genre /><Subjects /><Tags /><Note /><RelatedObjects /><Contributors /></Larm.Metadata>
                                                                             ")
                                 }
                         },

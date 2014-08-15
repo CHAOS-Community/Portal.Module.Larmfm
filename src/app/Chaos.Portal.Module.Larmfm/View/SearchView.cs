@@ -127,6 +127,8 @@
 
         private SearchViewData CreateRadioSearchViewData(Mcm.Data.Dto.Object obj, SearchViewData data)
         {
+
+
             var metadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == ProgramMetadataSchemaGuid);
             var larmmetadata = obj.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == LarmMetadataSchemaGuid);
 
@@ -136,14 +138,17 @@
 
             if (larmmetadata != null) larmmetadataString = MetadataHelper.GetXmlContent(larmmetadata.MetadataXml);
 
+            //throw new Exception("dates: "+  GetMetadata(metadata.MetadataXml, "PublicationDateTime") + " " + GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
+
+
             data.HasLarmMetadata = !string.IsNullOrEmpty(larmmetadataString);
 
             data.Title = GetMetadata(metadata.MetadataXml, "Title");
             data.Channel = GetMetadata(metadata.MetadataXml, "PublicationChannel");
             data.Type = "Radio";
-            data.FreeText = metadata.MetadataXml.Root.Value + " " + larmmetadataString;
-            data.PubStartDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime"));
-            data.PubEndDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime"));
+            data.FreeText = MetadataHelper.GetXmlContent(metadata.MetadataXml) + " " + larmmetadataString;
+            data.PubStartDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationDateTime")); //"2005-08-10T12:00:00Z";
+            data.PubEndDate = DateTimeHelper.ParseAndFormatDate(GetMetadata(metadata.MetadataXml, "PublicationEndDateTime")); //"2005-08-10T12:05:00Z";
             data.Duration = TimeCodeHelper.ConvertToTimeCode(data.PubStartDate, data.PubEndDate);
             data.DurationSec = TimeCodeHelper.ConvertToDurationInSec(data.PubStartDate, data.PubEndDate).ToString();
             data.ThumbUrl = MetadataHelper.GetUrl(obj, "Thumbnail");

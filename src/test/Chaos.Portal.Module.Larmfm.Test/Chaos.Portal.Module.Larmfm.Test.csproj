@@ -58,6 +58,7 @@
     <Compile Include="Extensions\SearchTest.cs" />
     <Compile Include="Extensions\UploadTest.cs" />
     <Compile Include="Extensions\WayfProfileTest.cs" />
+    <Compile Include="Helper\DateTimeHelperTest.cs" />
     <Compile Include="Helper\TimeCodeHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
