@@ -25,6 +25,8 @@
                     portalApplication.MapRoute("/v6/Search", () => new Search(portalApplication));
                     portalApplication.MapRoute("/v6/WayfProfile", () => new WayfProfile(portalApplication, mcm.McmRepository, settings));
                     portalApplication.MapRoute("/v6/Upload", () => new Upload(portalApplication, mcm.McmRepository, s3, transcoder, settings));
+                    portalApplication.MapRoute("/v6/Annotation", () => new Annotation(portalApplication, mcm.McmRepository));
+                    portalApplication.MapRoute("/v6/RadioProgram", () => new RadioProgram(portalApplication, mcm.McmRepository));
 
                     portalApplication.AddView(new SearchView(mcm.McmRepository), settings.Index.SearchCoreName);
                     portalApplication.AddView(new AnnotationView(mcm.McmRepository), settings.Index.AnnotationCoreName);

@@ -78,6 +78,8 @@
     <Compile Include="Domain\Aws\S3.cs" />
     <Compile Include="Domain\IStorage.cs" />
     <Compile Include="Domain\ITranscoder.cs" />
+    <Compile Include="Extensions\Annotation.cs" />
+    <Compile Include="Extensions\Copy of Annotation.cs" />
     <Compile Include="Extensions\Search.cs" />
     <Compile Include="Extensions\Upload.cs" />
     <Compile Include="Extensions\WayfProfile.cs" />
