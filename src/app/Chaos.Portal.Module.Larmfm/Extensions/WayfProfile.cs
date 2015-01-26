@@ -25,7 +25,7 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
 		public ScalarResult Update(Guid userGuid, string attributes)
 		{
-			if (!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can authenticate sessions");
+			if (!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can update wayfprofiles");
 
 			var user = PortalRepository.UserInfoGet(userGuid, null, null, null).FirstOrDefault();
 
@@ -67,10 +67,16 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 				if(folders == null)
 					throw new Exception("Failed to get folders");
 
+				if(folders.Count == 0)
+					throw new Exception("No folders exist");
+
+				if(string.IsNullOrWhiteSpace(Settings.UsersFolder))
+					throw new Exception("Users folder is not set in settings");
+
 				var usersFolder = GetFolderFromPath(null, Settings.UsersFolder.Split('/').ToList(), folders);
 
 				if(usersFolder == null)
-					throw new Exception("Failed to find users folder");
+					throw new Exception(string.Format("Failed to find users folder: \"{0}\"", Settings.UsersFolder));
 
 				var folderId = McmRepository.FolderCreate(userGuid, null, userGuid.ToString(), usersFolder.ID, Settings.UserFolderTypeId);
 
