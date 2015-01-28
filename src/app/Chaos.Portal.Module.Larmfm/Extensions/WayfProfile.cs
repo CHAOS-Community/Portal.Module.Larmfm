@@ -35,11 +35,11 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
 			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);
 
-			var email = user.Email ?? "Unkown";
-			var name = attributesObject["cn"] == null || attributesObject["cn"].Count == 0 ? "Unkown" : attributesObject["cn"][0];
-			var organization = attributesObject["organizationName"] == null || attributesObject["organizationName"].Count == 0 ? "Unkown" : attributesObject["organizationName"][0];
-			var title = attributesObject["eduPersonPrimaryAffiliation"] == null || attributesObject["eduPersonPrimaryAffiliation"].Count == 0 ? "Unkown" : attributesObject["eduPersonPrimaryAffiliation"][0];
-			var country = attributesObject["schacCountryOfCitizenship"] == null || attributesObject["schacCountryOfCitizenship"].Count == 0 ? "Unkown" : attributesObject["schacCountryOfCitizenship"][0];
+			var email = user.Email == null || user.Email.IndexOf("@") == -1 ? "Unkown" : user.Email;
+			var name = !attributesObject.ContainsKey("cn") || attributesObject["cn"].Count == 0 ? "Unkown" : attributesObject["cn"][0];
+			var organization = !attributesObject.ContainsKey("organizationName") || attributesObject["organizationName"].Count == 0 ? "Unkown" : attributesObject["organizationName"][0];
+			var title = !attributesObject.ContainsKey("eduPersonPrimaryAffiliation") || attributesObject["eduPersonPrimaryAffiliation"].Count == 0 ? "Unkown" : attributesObject["eduPersonPrimaryAffiliation"][0];
+			var country = !attributesObject.ContainsKey("schacCountryOfCitizenship") || attributesObject["schacCountryOfCitizenship"].Count == 0 ? "Unkown" : attributesObject["schacCountryOfCitizenship"][0];
 
 			var metadata = GetProfileMetadata(email, name, organization, title, country);
 			var existingMetadata = userObject.Metadatas == null ? null : userObject.Metadatas.FirstOrDefault(m => m.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
