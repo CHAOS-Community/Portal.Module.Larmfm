@@ -24,7 +24,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.View
 
             var result = (AnnotationViewData)view.Index(obj).First();
 
-            Assert.AreEqual(result.Id, "63a0348b-ab4b-8847-9c71-2d0b4771b0fe");
+            Assert.AreEqual(result.Identifier, "63a0348b-ab4b-8847-9c71-2d0b4771b0fe");
             Assert.AreEqual(result.StartTime, "00:55:27.0270000");
             Assert.AreEqual(result.Title, "Kashmir");
         }

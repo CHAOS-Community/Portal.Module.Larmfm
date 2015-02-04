@@ -31,7 +31,7 @@
                 {
                     new UserSearchViewData
                         {
-                            Id = obj.Guid.ToString(),
+                            Identifier = obj.Guid.ToString(),
                             Name = name
                         }
                 };
@@ -45,8 +45,8 @@
 
     public class UserSearchViewData : IViewData
     {
-        [Serialize]
-        public string Id { get; set; }
+        [Serialize("Id")]
+        public string Identifier { get; set; }
 
         [Serialize]
         public string Name { get; set; }
@@ -57,7 +57,7 @@
             yield return new KeyValuePair<string, string>("Name", Name.ToLower());
         }
 
-        public KeyValuePair<string, string> UniqueIdentifier { get{return new KeyValuePair<string, string>("Id", Id);} }
+        public KeyValuePair<string, string> UniqueIdentifier { get{return new KeyValuePair<string, string>("Id", Identifier);} }
         public string Fullname { get; private set; }
         
     }

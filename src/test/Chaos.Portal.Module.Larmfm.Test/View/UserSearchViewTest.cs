@@ -94,13 +94,13 @@
         {
             var viewData = new UserSearchViewData
                 {
-                    Id = "10000000-0000-0000-0000-000000000001",
+                    Identifier = "10000000-0000-0000-0000-000000000001",
                     Name = "John Doe"
                 };
 
             var fields = viewData.GetIndexableFields().ToDictionary(item => item.Key);
 
-            Assert.That(fields["Id"].Value, Is.EqualTo(viewData.Id));
+            Assert.That(fields["Id"].Value, Is.EqualTo(viewData.Identifier));
             Assert.That(fields["Name"].Value, Is.EqualTo("john doe"));
         }
     }
