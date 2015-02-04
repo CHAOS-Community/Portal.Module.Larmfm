@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.Portal.Module.Larmfm.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.Portal.Module.Larmfm.IntegrationTest", "src\test\Chaos.Portal.Module.Larmfm.IntegrationTest\Chaos.Portal.Module.Larmfm.IntegrationTest.csproj", "{31621084-EFF3-4A1F-BFE1-F3C619CEBA32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.Portal.Larmfm.Indexer", "src\app\Chaos.Portal.Larmfm.Indexer\Chaos.Portal.Larmfm.Indexer.csproj", "{DCAE5393-451F-4023-B762-CE4B4D39E02C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{31621084-EFF3-4A1F-BFE1-F3C619CEBA32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31621084-EFF3-4A1F-BFE1-F3C619CEBA32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31621084-EFF3-4A1F-BFE1-F3C619CEBA32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCAE5393-451F-4023-B762-CE4B4D39E02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCAE5393-451F-4023-B762-CE4B4D39E02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCAE5393-451F-4023-B762-CE4B4D39E02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCAE5393-451F-4023-B762-CE4B4D39E02C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{730C5580-BEB9-4917-AA1A-4AFC04A02B60} = {41DE5C90-A1D5-432F-A8E6-B48C5F8492A0}
 		{918D4F5A-C0F2-4A9A-A690-A6E8E4A150C6} = {41DE5C90-A1D5-432F-A8E6-B48C5F8492A0}
 		{E8BEAD0A-4B11-44C7-BC00-E5FCD56C306B} = {730C5580-BEB9-4917-AA1A-4AFC04A02B60}
+		{DCAE5393-451F-4023-B762-CE4B4D39E02C} = {730C5580-BEB9-4917-AA1A-4AFC04A02B60}
 		{036E701C-C806-4963-B10D-EA913DE76A9F} = {918D4F5A-C0F2-4A9A-A690-A6E8E4A150C6}
 		{31621084-EFF3-4A1F-BFE1-F3C619CEBA32} = {918D4F5A-C0F2-4A9A-A690-A6E8E4A150C6}
 	EndGlobalSection
