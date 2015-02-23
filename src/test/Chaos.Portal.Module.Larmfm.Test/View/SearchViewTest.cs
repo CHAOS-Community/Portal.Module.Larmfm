@@ -23,7 +23,7 @@
 
             var result = (SearchViewData) view.Index(obj).First();
 
-            Assert.AreEqual(result.Id, "00000000-0000-0000-0000-000000000001");
+            Assert.AreEqual(result.Identifier, "00000000-0000-0000-0000-000000000001");
             Assert.AreEqual(result.Title, "EXPO 2005");
             Assert.AreEqual(result.Type, "Radio");
             Assert.AreEqual(result.PubStartDate, "2005-08-10T12:00:00Z");
@@ -56,7 +56,7 @@
 
             var result = (SearchViewData)view.Index(obj).First();
 
-            Assert.AreEqual(result.Id, ("00000000-0000-0000-0000-000000000002"));
+            Assert.AreEqual(result.Identifier, ("00000000-0000-0000-0000-000000000002"));
             Assert.AreEqual(result.Title, ("A-1967-04-01-P-0042.pdf"));
             Assert.AreEqual(result.Type, ("Schedule"));
             Assert.AreEqual(result.FreeText, ("Test data content."));
@@ -74,7 +74,7 @@
 
             var result = (SearchViewData)view.Index(obj).First();
 
-            Assert.AreEqual(result.Id, ("00000000-0000-0000-0000-000000000003"));
+            Assert.AreEqual(result.Identifier, ("00000000-0000-0000-0000-000000000003"));
             Assert.AreEqual(result.Title, ("A-1964-10-24-S-0321.pdf"));
             Assert.AreEqual(result.Type, ("ScheduleNote"));
             Assert.AreEqual(result.FreeText, ("Test data content."));
@@ -103,7 +103,7 @@
         {
             var data = new SearchViewData
                 {
-                    Id       = "00000000-0000-0000-0000-000000000001",
+                    Identifier       = "00000000-0000-0000-0000-000000000001",
                     Title    = "P7 MIX",
                     Type     = "Radio",
                     FreeText = "test text",

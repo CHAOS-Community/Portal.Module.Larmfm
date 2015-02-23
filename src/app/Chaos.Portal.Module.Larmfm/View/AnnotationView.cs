@@ -60,7 +60,7 @@
             data.EditingUser = GetUsername(data.EditingUserGUID);
             data.FreeText  = MetadataHelper.GetXmlContent(metadata.MetadataXml);
                         
-                        data.Id = obj.Guid.ToString();
+                        data.Identifier = obj.Guid.ToString();
 
                         return new IViewData[] { data };
         }
@@ -134,14 +134,14 @@
             if (!string.IsNullOrEmpty(FreeText)) yield return new KeyValuePair<string, string>("FreeText", FreeText);
         }
 
-        public KeyValuePair<string, string> UniqueIdentifier { get { return new KeyValuePair<string, string>("Id", Id); } }
+        public KeyValuePair<string, string> UniqueIdentifier { get { return new KeyValuePair<string, string>("Id", Identifier); } }
         public string Fullname { get { return "Chaos.Portal.Module.Larm.Data.AnnotationViewData"; } }
 
         [Serialize]
         public string ProgramGUID { get; set; }
 
-        [Serialize]
-        public string Id { get; set; }
+        [Serialize("Id")]
+        public string Identifier { get; set; }
 
         [Serialize]
         public string Title { get; set; }

@@ -126,12 +126,14 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 		{
 			return new List<Folder>
 			{
+				new Folder { Name = "LARM", ID = 23, ParentID = 3},
 				new Folder { Name = "Some Folder", ID = 3},
 				new Folder { Name = "LARM", ID = 45},
 				new Folder { Name = "Blah blah", ParentID = 3},
 				new Folder { Name = "Users", ID = 90, ParentID = 45},
 				new Folder { Name = "PeterUser", ID = 10, ParentID = 90},
-				new Folder { Name = "Something else", ID = 23}
+				new Folder { Name = "Something else", ID = 23},
+				new Folder { Name = "LARM", ID = 23, ParentID = 10},
 			};
 		}
 

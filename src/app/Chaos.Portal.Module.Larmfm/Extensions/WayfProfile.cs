@@ -25,7 +25,7 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
 		public ScalarResult Update(Guid userGuid, string attributes)
 		{
-			if (!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can authenticate sessions");
+			if (!Request.User.HasPermission(SystemPermissons.Manage)) throw new InsufficientPermissionsException("Only managers can update wayfprofiles");
 
 			var user = PortalRepository.UserInfoGet(userGuid, null, null, null).FirstOrDefault();
 
@@ -35,7 +35,13 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
 			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);
 
-			var metadata = GetProfileMetadata(user.Email, attributesObject["cn"][0], attributesObject["organizationName"][0], attributesObject["eduPersonPrimaryAffiliation"][0], attributesObject["schacCountryOfCitizenship"][0]);
+			var email = user.Email == null || user.Email.IndexOf("@") == -1 ? "Unkown" : user.Email;
+			var name = !attributesObject.ContainsKey("cn") || attributesObject["cn"].Count == 0 ? "Unkown" : attributesObject["cn"][0];
+			var organization = !attributesObject.ContainsKey("organizationName") || attributesObject["organizationName"].Count == 0 ? "Unkown" : attributesObject["organizationName"][0];
+			var title = !attributesObject.ContainsKey("eduPersonPrimaryAffiliation") || attributesObject["eduPersonPrimaryAffiliation"].Count == 0 ? "Unkown" : attributesObject["eduPersonPrimaryAffiliation"][0];
+			var country = !attributesObject.ContainsKey("schacCountryOfCitizenship") || attributesObject["schacCountryOfCitizenship"].Count == 0 ? "Unkown" : attributesObject["schacCountryOfCitizenship"][0];
+
+			var metadata = GetProfileMetadata(email, name, organization, title, country);
 			var existingMetadata = userObject.Metadatas == null ? null : userObject.Metadatas.FirstOrDefault(m => m.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
 
 			if (existingMetadata == null || existingMetadata.MetadataXml.ToString(SaveOptions.DisableFormatting) != metadata)
@@ -67,10 +73,16 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 				if(folders == null)
 					throw new Exception("Failed to get folders");
 
+				if(folders.Count == 0)
+					throw new Exception("No folders exist");
+
+				if(string.IsNullOrWhiteSpace(Settings.UsersFolder))
+					throw new Exception("Users folder is not set in settings");
+
 				var usersFolder = GetFolderFromPath(null, Settings.UsersFolder.Split('/').ToList(), folders);
 
 				if(usersFolder == null)
-					throw new Exception("Failed to find users folder");
+					throw new Exception(string.Format("Failed to find users folder: \"{0}\"", Settings.UsersFolder));
 
 				var folderId = McmRepository.FolderCreate(userGuid, null, userGuid.ToString(), usersFolder.ID, Settings.UserFolderTypeId);
 
