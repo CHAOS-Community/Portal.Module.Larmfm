@@ -1,4 +1,5 @@
-﻿using Chaos.Portal.Module.Larmfm.Helpers;
+﻿using System.Security.Cryptography;
+using Chaos.Portal.Module.Larmfm.Helpers;
 
 namespace Chaos.Portal.Module.Larmfm.Test.Helper
 {
@@ -18,6 +19,16 @@ namespace Chaos.Portal.Module.Larmfm.Test.Helper
             var result = Helpers.TimeCodeHelper.ConvertToTimeCode(dtFrom, dtTo);
 
             Assert.AreEqual("00:35:12", result);
+        }
+
+        [Test]
+        public void Should_Return_0()
+        {
+            var dtFromt = DateTime.Now;
+
+            var dtoTo = DateTime.MinValue;
+
+            Assert.AreEqual(TimeCodeHelper.ConvertToDurationInSec(dtFromt, dtoTo), 0);
         }
 
         [Test]
