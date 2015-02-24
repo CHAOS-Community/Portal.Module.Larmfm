@@ -88,12 +88,14 @@
 
         private string GetMetadataAttribute(XDocument xroot, string attributeName)
         {
-            var returnValue = "";
-
-            try { returnValue = xroot.Root.Attribute(attributeName).Value; }
-            catch (Exception ex) {  }
-
-            return returnValue;
+            try
+            {
+              return xroot.Root.Attribute(attributeName).Value;
+            }
+            catch (Exception)
+            {
+              return "";
+            }
         }
 
 
