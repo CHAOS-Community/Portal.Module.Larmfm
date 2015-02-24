@@ -11,6 +11,18 @@ namespace Chaos.Portal.Module.Larmfm.Api
       Emails = new List<string>();
       PhoneNumbers = new List<string>();
       Websites = new List<string>();
+
+      Name = "";
+      Title = "";
+      About = "";
+      Organization = "";
+      Skype = "";
+      LinkedIn = "";
+      Twitter = "";
+      Address = "";
+      City = "";
+      ZipCode = "";
+      Country = "";
     }
 
     [Serialize]
@@ -57,20 +69,7 @@ namespace Chaos.Portal.Module.Larmfm.Api
 
     public static ProfileResult CreateNullObject()
     {
-      return new ProfileResult
-        {
-          Name = "",
-          Title = "",
-          About = "",
-          Organization = "",
-          Skype = "",
-          LinkedIn = "",
-          Twitter = "",
-          Address = "",
-          City = "",
-          ZipCode = "",
-          Country = "",
-        };
+      return new ProfileResult();
     }
   }
 }

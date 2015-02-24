@@ -1,4 +1,5 @@
 ﻿using Chaos.Portal.Core.Bindings.Standard;
+using Chaos.Portal.Module.Larmfm.Api;
 
 namespace Chaos.Portal.Module.Larmfm
 {
@@ -36,7 +37,7 @@ namespace Chaos.Portal.Module.Larmfm
           portalApplication.AddView(new UserSearchView(), settings.Index.UserSearchCoreName);
           portalApplication.AddView(new ObjectView(mcm.PermissionManager), mcm.Configuration.ObjectCoreName, true);
 
-          portalApplication.AddBinding(typeof (Search), new JsonParameterBinding<Search>());
+          portalApplication.AddBinding(typeof(ProfileResult), new JsonParameterBinding<ProfileResult>());
         };
     }
   }

@@ -3,7 +3,9 @@ using System.Xml.Linq;
 using Chaos.Mcm.Data.Dto;
 using Chaos.Portal.Core.Data.Model;
 using Chaos.Portal.Core.Exceptions;
+using Chaos.Portal.Module.Larmfm.Api;
 using Chaos.Portal.Module.Larmfm.Extensions;
+using Moq;
 using NUnit.Framework;
 using Object = Chaos.Mcm.Data.Dto.Object;
 
@@ -76,6 +78,53 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
       Assert.That(result.City, Is.EqualTo("city name"));
       Assert.That(result.ZipCode, Is.EqualTo("1234"));
       Assert.That(result.Country, Is.EqualTo("DK"));
+    }
+
+    [Test, ExpectedException(typeof(InsufficientPermissionsException))]
+    public void Set_GivenAnonymousUser_Throw()
+    {
+      var extension = Make_ProfileExtension();
+      PortalRequest.Setup(p => p.IsAnonymousUser).Returns(true);
+
+      extension.Set(new ProfileResult());
+    }
+    
+    [Test]
+    public void Set_GivenValidProfileResult_SetMetadata()
+    {
+      var extension = Make_ProfileExtension();
+      var user = new UserInfo {Guid = new Guid("10000000-0000-0000-0000-000000000001")};
+      PortalRequest.Setup(p => p.User).Returns(user);
+      McmRepository.Setup(
+        m => m.ObjectGet(new Guid("10000000-0000-0000-0000-000000000001"), true, false, false, false, false))
+                   .Returns(new Object
+                   {
+                     Metadatas = new[]{new Metadata
+                         {
+                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><Phonenumber>(+45) 8888 8888</Phonenumber></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><Zipcode>1234</Zipcode><Country>DK</Country></CHAOS.Profile>")
+                         }}
+                   });
+      
+      var result = extension.Set(new ProfileResult{Name = "John Doe"});
+
+      Assert.That(result.WasSuccess, Is.True);
+      McmRepository.Verify(m => m.MetadataSet(user.Guid, It.IsAny<Guid>(), It.IsAny<Guid>(), "da", 0, It.IsAny<XDocument>(), user.Guid));
+    }
+    
+    [Test]
+    public void Set_GivenValidProfileResultButMetadataDoesntExist_SetMetadata()
+    {
+      var extension = Make_ProfileExtension();
+      var user = new UserInfo {Guid = new Guid("10000000-0000-0000-0000-000000000001")};
+      PortalRequest.Setup(p => p.User).Returns(user);
+      McmRepository.Setup(
+        m => m.ObjectGet(new Guid("10000000-0000-0000-0000-000000000001"), true, false, false, false, false))
+                   .Returns(new Object());
+      
+      var result = extension.Set(new ProfileResult{Name = "John Doe"});
+
+      Assert.That(result.WasSuccess, Is.True);
+      McmRepository.Verify(m => m.MetadataSet(user.Guid, It.IsAny<Guid>(), It.IsAny<Guid>(), "da", 0, It.IsAny<XDocument>(), user.Guid));
     }
 
     private Profile Make_ProfileExtension()

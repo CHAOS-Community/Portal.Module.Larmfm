@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using CHAOS.Serialization.Standard;
+using CHAOS.Serialization.Standard.XML;
 using Chaos.Mcm.Data;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Exceptions;
 using Chaos.Portal.Core.Extension;
 using Chaos.Portal.Module.Larmfm.Api;
+using Chaos.Portal.v5.Extension.Result;
 using Object = Chaos.Mcm.Data.Dto.Object;
 
 namespace Chaos.Portal.Module.Larmfm.Extensions
@@ -64,6 +67,26 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
       result.Country = root.Element("Country").Value;
 
       return result;
+    }
+
+    public EndpointResult Set(ProfileResult data)
+    {
+      if (Request.IsAnonymousUser) throw new InsufficientPermissionsException("User is not logged in");
+
+      var userId = Request.User.Guid;
+      var user = Repository.ObjectGet(userId, true);
+
+      if (user == null) throw new NotImplementedException("Profile object not found");
+
+      var metadata = user.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
+      var xml = SerializerFactory.XMLSerializer.Serialize(data);
+
+      if (metadata == null)
+        Repository.MetadataSet(userId, Guid.NewGuid(), Settings.UserProfileMetadataSchemaGuid, "da", 0, xml, userId);
+      else
+        Repository.MetadataSet(userId, metadata.Guid, Settings.UserProfileMetadataSchemaGuid, "da", 0, xml, userId);
+
+      return EndpointResult.Success();
     }
   }
 }
