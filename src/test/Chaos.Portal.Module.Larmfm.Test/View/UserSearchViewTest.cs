@@ -81,7 +81,7 @@
                                                                         <Twitter />
                                                                         <Address />
                                                                         <City />
-                                                                        <Zipcode />
+                                                                        <ZipCode />
                                                                         <Country>United States</Country>
                                                                     </CHAOS.Profile>")
                                 }

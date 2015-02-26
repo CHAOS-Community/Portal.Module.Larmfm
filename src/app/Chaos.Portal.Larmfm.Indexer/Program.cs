@@ -43,7 +43,7 @@ namespace Chaos.Portal.Larmfm.Indexer
         var objects = mcm.McmRepository.ObjectGet(null, i, PageSize, true, true, true, true, true);
         Write(0, 1, String.Format("ObjectGet time: {0}", t1.Elapsed));
         retrievedCount += objects.Count;
-
+        
         new Thread(() =>
           {
             var objs = objects;

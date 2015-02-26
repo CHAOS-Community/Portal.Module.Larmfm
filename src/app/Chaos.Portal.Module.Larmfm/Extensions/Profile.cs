@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using CHAOS.Serialization.Standard;
-using CHAOS.Serialization.Standard.XML;
 using Chaos.Mcm.Data;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Exceptions;
@@ -43,19 +42,22 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
       if (metadata == null) return ProfileResult.CreateNullObject();
 
       var root = metadata.MetadataXml.Root;
+
+      if (root == null) return ProfileResult.CreateNullObject();
+
       var result = new ProfileResult();
       result.Name = root.Element("Name").Value;
       result.Title = root.Element("Title").Value;
       result.About = root.Element("About").Value;
       result.Organization = root.Element("Organization").Value;
-      
-      foreach (var email in root.Descendants("Email"))
+
+      foreach (var email in root.Element("Emails").Elements())
         result.Emails.Add(email.Value);
 
-      foreach (var phonenumber in root.Descendants("Phonenumber"))
+      foreach (var phonenumber in root.Element("PhoneNumbers") != null ? root.Element("PhoneNumbers").Elements() : root.Element("Phonenumbers").Elements())
         result.PhoneNumbers.Add(phonenumber.Value);
 
-      foreach (var website in root.Descendants("Website"))
+      foreach (var website in root.Element("Websites").Elements())
         result.Websites.Add(website.Value);
 
       result.Skype = root.Element("Skype").Value;
@@ -63,9 +65,9 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
       result.Twitter = root.Element("Twitter").Value;
       result.Address = root.Element("Address").Value;
       result.City = root.Element("City").Value;
-      result.ZipCode = root.Element("Zipcode").Value;
+      result.ZipCode = root.Element("ZipCode").Value;
       result.Country = root.Element("Country").Value;
-
+      
       return result;
     }
 
@@ -80,7 +82,7 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
       var metadata = user.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
       var xml = SerializerFactory.XMLSerializer.Serialize(data);
-
+      
       if (metadata == null)
         Repository.MetadataSet(userId, Guid.NewGuid(), Settings.UserProfileMetadataSchemaGuid, "da", 0, xml, userId);
       else

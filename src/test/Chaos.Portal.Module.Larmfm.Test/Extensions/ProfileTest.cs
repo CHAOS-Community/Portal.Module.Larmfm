@@ -58,7 +58,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
                      {
                        Metadatas = new []{new Metadata
                          {
-                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><Phonenumber>(+45) 8888 8888</Phonenumber></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><Zipcode>1234</Zipcode><Country>DK</Country></CHAOS.Profile>")
+                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><Phonenumber>(+45) 8888 8888</Phonenumber></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><ZipCode>1234</ZipCode><Country>DK</Country></CHAOS.Profile>")
                          }}
                      });
 
@@ -101,7 +101,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
                    {
                      Metadatas = new[]{new Metadata
                          {
-                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><Phonenumber>(+45) 8888 8888</Phonenumber></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><Zipcode>1234</Zipcode><Country>DK</Country></CHAOS.Profile>")
+                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><String>(+45) 8888 8888</String></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><Zipcode>1234</Zipcode><Country>DK</Country></CHAOS.Profile>")
                          }}
                    });
       
@@ -121,7 +121,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
         m => m.ObjectGet(new Guid("10000000-0000-0000-0000-000000000001"), true, false, false, false, false))
                    .Returns(new Object());
       
-      var result = extension.Set(new ProfileResult{Name = "John Doe"});
+      var result = extension.Set(new ProfileResult{Name = "John Doe", Emails = new []{"me@example.com"}});
 
       Assert.That(result.WasSuccess, Is.True);
       McmRepository.Verify(m => m.MetadataSet(user.Guid, It.IsAny<Guid>(), It.IsAny<Guid>(), "da", 0, It.IsAny<XDocument>(), user.Guid));
