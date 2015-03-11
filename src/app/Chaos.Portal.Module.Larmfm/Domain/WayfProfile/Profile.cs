@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Chaos.Portal.Module.Larmfm.Domain.WayfProfile
@@ -27,13 +28,29 @@ namespace Chaos.Portal.Module.Larmfm.Domain.WayfProfile
 
 			try
 			{
-				Name = data.Root.Element("Name").Value;
-				Title = data.Root.Element("Title").Value;
-				Organization = data.Root.Element("Organization").Value;
-				Country = data.Root.Element("Country").Value;
+			    var name = data.Root.Descendants("Name").FirstOrDefault();
+                if (name != null)
+                    Name = name.Value;
+			    
+                var title = data.Root.Descendants("Title").FirstOrDefault();
+                if (title != null)
+                    Title = title.Value;
+			    
+                var organization = data.Root.Descendants("Organization").FirstOrDefault();
+                if (organization != null)
+                    Organization = organization.Value;
+			    
+                var country = data.Root.Descendants("Country").FirstOrDefault();
 
-				var emailElement = data.Root.Element("Emails");
-				Email = emailElement != null && emailElement.HasElements ? emailElement.Element("Email").Value : "";
+                if (country != null)
+                    Country = country.Value;
+
+			    var emailElement = data.Root.Descendants("Emails").FirstOrDefault();
+			    if (emailElement == null) return;
+			    
+                var email = emailElement.Descendants("Email").FirstOrDefault();
+			    if (email != null)
+			        Email = emailElement.HasElements ? email.Value : "";
 			}
 			catch (Exception error)
 			{
