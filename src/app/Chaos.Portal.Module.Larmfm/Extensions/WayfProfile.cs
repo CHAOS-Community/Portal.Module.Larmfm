@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Chaos.Mcm.Data;
+using Chaos.Mcm.Data.Dto;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Data.Model;
 using Chaos.Portal.Core.Exceptions;
 using Chaos.Portal.Core.Extension;
+using CHAOS.Serialization.Standard.XML;
 using Newtonsoft.Json;
 using Object = Chaos.Mcm.Data.Dto.Object;
 
@@ -35,31 +37,30 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
 			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);
 
-			var email = user.Email == null || user.Email.IndexOf("@") == -1 ? "Unkown" : user.Email;
-			var name = !attributesObject.ContainsKey("cn") || attributesObject["cn"].Count == 0 ? "Unkown" : attributesObject["cn"][0];
-			var organization = !attributesObject.ContainsKey("organizationName") || attributesObject["organizationName"].Count == 0 ? "Unkown" : attributesObject["organizationName"][0];
-			var title = !attributesObject.ContainsKey("eduPersonPrimaryAffiliation") || attributesObject["eduPersonPrimaryAffiliation"].Count == 0 ? "Unkown" : attributesObject["eduPersonPrimaryAffiliation"][0];
-			var country = !attributesObject.ContainsKey("schacCountryOfCitizenship") || attributesObject["schacCountryOfCitizenship"].Count == 0 ? "Unkown" : attributesObject["schacCountryOfCitizenship"][0];
+			var email = user.Email == null || user.Email.IndexOf("@") == -1 ? "" : user.Email;
+			var name = !attributesObject.ContainsKey("cn") || attributesObject["cn"].Count == 0 ? "" : attributesObject["cn"][0];
+			var organization = !attributesObject.ContainsKey("organizationName") || attributesObject["organizationName"].Count == 0 ? "" : attributesObject["organizationName"][0];
+			var title = !attributesObject.ContainsKey("eduPersonPrimaryAffiliation") || attributesObject["eduPersonPrimaryAffiliation"].Count == 0 ? "" : attributesObject["eduPersonPrimaryAffiliation"][0];
+			var country = !attributesObject.ContainsKey("schacCountryOfCitizenship") || attributesObject["schacCountryOfCitizenship"].Count == 0 ? "" : attributesObject["schacCountryOfCitizenship"][0];
 
-			var metadata = GetProfileMetadata(email, name, organization, title, country);
+			var newProfile = new Domain.WayfProfile.Profile(email, name, organization, title, country);
+
 			var existingMetadata = userObject.Metadatas == null ? null : userObject.Metadatas.FirstOrDefault(m => m.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
+			var existingProfile = existingMetadata != null ? new Domain.WayfProfile.Profile(existingMetadata.MetadataXml) : null;
 
-			if (existingMetadata == null || existingMetadata.MetadataXml.ToString(SaveOptions.DisableFormatting) != metadata)
+
+			if (existingProfile == null || !existingProfile.Equals(newProfile))
 			{
 				var metadataGuid = existingMetadata == null ? Guid.NewGuid() : existingMetadata.Guid;
 				var revisionId = existingMetadata == null ? 0 : existingMetadata.RevisionID + 1;
 
-				if (McmRepository.MetadataSet(userObject.Guid, metadataGuid, Settings.UserProfileMetadataSchemaGuid, Settings.UserProfileLanguageCode, revisionId, XDocument.Parse(metadata), user.Guid) != 1)
+				if(existingProfile != null) newProfile.FillEmptyDataFrom(existingProfile);
+
+				if (McmRepository.MetadataSet(userObject.Guid, metadataGuid, Settings.UserProfileMetadataSchemaGuid, Settings.UserProfileLanguageCode, revisionId, newProfile.ToXml(), user.Guid) != 1)
 					throw new Exception("Failed to create user profile metadata");
 			}
 
 			return new ScalarResult(1);
-		}
-
-		private string GetProfileMetadata(string email, string name, string organization, string title, string country)
-		{
-			return string.Format("<CHAOS.Profile><Name>{0}</Name><Title>{1}</Title><About></About><Organization>{2}</Organization><Emails><Email>{3}</Email></Emails><Phonenumbers><Phonenumber></Phonenumber></Phonenumbers><Websites><Website></Website></Websites><Skype></Skype><LinkedIn></LinkedIn><Twitter></Twitter><Address></Address><City></City><Zipcode></Zipcode><Country>{4}</Country></CHAOS.Profile>",
-				name, title, organization, email, country);
 		}
 
 		private Object GetUserObject(Guid userGuid)

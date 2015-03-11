@@ -3,13 +3,12 @@ using Chaos.Mcm.Data;
 using Chaos.Portal.Core;
 using Chaos.Portal.Core.Data;
 using Chaos.Portal.Core.Request;
+using Chaos.Portal.Module.Larmfm.Domain;
 using Moq;
 using NUnit.Framework;
 
 namespace Chaos.Portal.Module.Larmfm.Test
 {
-    using Domain;
-
     public class TestBase
 	{
 		protected Mock<IPortalApplication> PortalApplication { get; set; }

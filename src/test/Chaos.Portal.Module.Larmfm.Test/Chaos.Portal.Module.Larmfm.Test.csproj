@@ -55,6 +55,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\WayfProfile\ProfileTest.cs" />
+    <Compile Include="Extensions\ProfileTest.cs" />
     <Compile Include="Extensions\SearchTest.cs" />
     <Compile Include="Extensions\UploadTest.cs" />
     <Compile Include="Extensions\WayfProfileTest.cs" />

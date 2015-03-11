@@ -74,11 +74,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ProfileResult.cs" />
     <Compile Include="Domain\Aws\ElasticTranscoder.cs" />
     <Compile Include="Domain\Aws\S3.cs" />
     <Compile Include="Domain\IStorage.cs" />
     <Compile Include="Domain\ITranscoder.cs" />
+    <Compile Include="Domain\WayfProfile\Profile.cs" />
     <Compile Include="Extensions\Annotation.cs" />
+    <Compile Include="Extensions\Profile.cs" />
     <Compile Include="Extensions\RadioProgram.cs" />
     <Compile Include="Extensions\Search.cs" />
     <Compile Include="Extensions\Upload.cs" />
