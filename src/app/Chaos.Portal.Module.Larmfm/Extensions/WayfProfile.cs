@@ -33,6 +33,10 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
 			if(user == null) throw new ArgumentException(string.Format("User with guid {0} not found", userGuid));
 
+            //Set User - Group Join. To enable annotations and metadata edit. 
+            if (Request.Groups.All(g => g.Guid != Settings.UserGroup))
+                PortalRepository.GroupAddUser(Settings.UserGroup, userGuid, 20, null);
+
 			var userObject = GetUserObject(userGuid);
 
 			var attributesObject = JsonConvert.DeserializeObject<IDictionary<string, IList<string>>>(attributes);

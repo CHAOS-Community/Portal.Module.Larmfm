@@ -5,7 +5,8 @@
 
     public class LarmSettings : IModuleSettings
 	{
-		public string UserProfileLanguageCode { get; set; }
+        public Guid UserGroup { get; set; }
+        public string UserProfileLanguageCode { get; set; }
 		public Guid UserProfileMetadataSchemaGuid { get; set; }
 		public string UsersFolder { get; set; }
 		public uint UserFolderTypeId { get; set; } 
