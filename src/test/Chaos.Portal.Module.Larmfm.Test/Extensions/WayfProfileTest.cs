@@ -128,7 +128,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
 		public void Update_GivenExistingUsersAttributesWithSomeEmptyProperties_UpdateUserObjectReturnSuccess()
 		{
 			var extension = Make_WayfProfileExtension();
-			const string expectedXmlString = "<CHAOS.Profile><Name>Jens farmer</Name><Title>Walker</Title><About></About><Organization>Institut</Organization><Emails><Email>jens.jensen@institution.dk</Email></Emails><Phonenumbers><Phonenumber></Phonenumber></Phonenumbers><Websites><Website></Website></Websites><Skype></Skype><LinkedIn></LinkedIn><Twitter></Twitter><Address></Address><City></City><ZipCode></ZipCode><Country>DK</Country></CHAOS.Profile>";
+			const string expectedXmlString = "<CHAOS.Profile><Name>Jens farmer</Name><Title>Walker</Title><About></About><Organization>Institut</Organization><Emails><Email>jens.jensen@institution.dk</Email></Emails><Phonenumbers><Phonenumber></Phonenumber></Phonenumbers><Websites><Website></Website></Websites><Skype></Skype><LinkedIn></LinkedIn><Twitter></Twitter><Address></Address><City></City><ZipCode></ZipCode><Country>Denmark</Country></CHAOS.Profile>";
 			var user = new UserInfo
 			{
 				Guid = new Guid("63a0348b-ab4b-8847-9c71-2d0b4771b0fe"),

@@ -34,7 +34,7 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 			if(user == null) throw new ArgumentException(string.Format("User with guid {0} not found", userGuid));
 
             //Set User - Group Join. To enable annotations and metadata edit. 
-            if (Request.Groups.All(g => g.Guid != Settings.UserGroup))
+            if ( PortalRepository.GroupGet(Settings.UserGroup, null, null, userGuid).Count() != 1)
                 PortalRepository.GroupAddUser(Settings.UserGroup, userGuid, 20, null);
 
 			var userObject = GetUserObject(userGuid);
@@ -58,7 +58,7 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 				var metadataGuid = existingMetadata == null ? Guid.NewGuid() : existingMetadata.Guid;
 				var revisionId = existingMetadata == null ? 0 : existingMetadata.RevisionID + 1;
 
-				if(existingProfile != null) newProfile.FillEmptyDataFrom(existingProfile);
+				if(existingProfile != null) newProfile.FillDataFrom(existingProfile);
 
 				if (McmRepository.MetadataSet(userObject.Guid, metadataGuid, Settings.UserProfileMetadataSchemaGuid, Settings.UserProfileLanguageCode, revisionId, newProfile.ToXml(), user.Guid) != 1)
 					throw new Exception("Failed to create user profile metadata");

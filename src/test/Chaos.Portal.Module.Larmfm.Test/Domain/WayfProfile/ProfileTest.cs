@@ -92,7 +92,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Domain.WayfProfile
 		}
 
 		[Test]
-		public void FillEmptyDataFrom_EmptyProfileGivenFullProfile_ShouldOverwriteEverything()
+		public void FillDataFrom_EmptyProfileGivenFullProfile_ShouldOverwriteEverything()
 		{
 			const string email = "Peter@intitut.dk";
 			const string name = "Peter";
@@ -103,7 +103,7 @@ namespace Chaos.Portal.Module.Larmfm.Test.Domain.WayfProfile
 			var existingProfile = new Profile("", "", null, null, null);
 			var fillingProfile = new Profile(email, name, organization, title, country);
 
-			existingProfile.FillEmptyDataFrom(fillingProfile);
+			existingProfile.FillDataFrom(fillingProfile);
 
 			Assert.AreEqual(email, existingProfile.Email);
 			Assert.AreEqual(name, existingProfile.Name);
@@ -113,27 +113,27 @@ namespace Chaos.Portal.Module.Larmfm.Test.Domain.WayfProfile
 		}
 
 		[Test]
-		public void FillEmptyDataFrom_PartiallyEmptyProfileGivenFullProfile_ShouldOverwriteEmptyProperties()
+		public void FillDataFrom_PartiallyEmptyProfileGivenFullProfile_ShouldOverwriteEmptyProperties()
 		{
 			const string existingEmail = "Peter@intitut.dk";
-			const string existingname = "Hans";
+			const string existingName = "Hans";
+			const string existingOrganization = "Institut";
+			const string existingTitle = "Walker";
+			const string existingCountry = "Denmark";
 
 			const string email = "Peter@intitut.dk";
-			const string name = "Peter";
-			const string organization = "Institut";
 			const string title = "Walker";
-			const string country = "Denmark";
 
-			var existingProfile = new Profile(existingEmail, existingname, null, null, null);
-			var fillingProfile = new Profile(email, name, organization, title, country);
+			var existingProfile = new Profile(existingEmail, existingName, existingOrganization, existingTitle, existingCountry);
+			var fillingProfile = new Profile(email, null, "", title, "  ");
 
-			existingProfile.FillEmptyDataFrom(fillingProfile);
+			existingProfile.FillDataFrom(fillingProfile);
 
-			Assert.AreEqual(existingEmail, existingProfile.Email);
-			Assert.AreEqual(existingname, existingProfile.Name);
-			Assert.AreEqual(organization, existingProfile.Organization);
+			Assert.AreEqual(email, existingProfile.Email);
+			Assert.AreEqual(existingName, existingProfile.Name);
+			Assert.AreEqual(existingOrganization, existingProfile.Organization);
 			Assert.AreEqual(title, existingProfile.Title);
-			Assert.AreEqual(country, existingProfile.Country);
+			Assert.AreEqual(existingCountry, existingProfile.Country);
 		}
 	}
 }

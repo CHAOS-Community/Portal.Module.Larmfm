@@ -70,13 +70,13 @@ namespace Chaos.Portal.Module.Larmfm.Domain.WayfProfile
 			return XDocument.Parse(ToXmlString());
 		}
 
-		public void FillEmptyDataFrom(Profile profile)
+		public void FillDataFrom(Profile profile)
 		{
-			if (string.IsNullOrWhiteSpace(Email)) Email = profile.Email;
-			if (string.IsNullOrWhiteSpace(Name)) Name = profile.Name;
-			if (string.IsNullOrWhiteSpace(Organization)) Organization = profile.Organization;
-			if (string.IsNullOrWhiteSpace(Title)) Title = profile.Title;
-			if (string.IsNullOrWhiteSpace(Country)) Country = profile.Country;
+			if (!string.IsNullOrWhiteSpace(profile.Email)) Email = profile.Email;
+			if (!string.IsNullOrWhiteSpace(profile.Name)) Name = profile.Name;
+			if (!string.IsNullOrWhiteSpace(profile.Organization)) Organization = profile.Organization;
+			if (!string.IsNullOrWhiteSpace(profile.Title)) Title = profile.Title;
+			if (!string.IsNullOrWhiteSpace(profile.Country)) Country = profile.Country;
 		}
 
 		public override bool Equals(object obj)
