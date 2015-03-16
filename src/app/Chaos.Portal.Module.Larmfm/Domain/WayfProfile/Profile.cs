@@ -24,33 +24,24 @@ namespace Chaos.Portal.Module.Larmfm.Domain.WayfProfile
 		public Profile(XDocument data)
 		{
 			if(data.Root == null) throw new Exception("Root is null");
-			if(!data.Root.HasElements) return;
 
 			try
 			{
-			    var name = data.Root.Descendants("Name").FirstOrDefault();
-                if (name != null)
-                    Name = name.Value;
-			    
-                var title = data.Root.Descendants("Title").FirstOrDefault();
-                if (title != null)
-                    Title = title.Value;
-			    
-                var organization = data.Root.Descendants("Organization").FirstOrDefault();
-                if (organization != null)
-                    Organization = organization.Value;
-			    
-                var country = data.Root.Descendants("Country").FirstOrDefault();
+			    var name = data.Root.Element("Name");
+				Name = name != null ? name.Value : "";
 
-                if (country != null)
-                    Country = country.Value;
+				var title = data.Root.Element("Title");
+				Title = title != null ? title.Value : "";
 
-			    var emailElement = data.Root.Descendants("Emails").FirstOrDefault();
-			    if (emailElement == null) return;
-			    
-                var email = emailElement.Descendants("Email").FirstOrDefault();
-			    if (email != null)
-			        Email = emailElement.HasElements ? email.Value : "";
+				var organization = data.Root.Element("Organization");
+                Organization = organization != null ? organization.Value : "";
+
+				var country = data.Root.Element("Country");
+                Country = country != null ? country.Value : "";
+
+				var emails = data.Root.Element("Emails");
+				if (emails != null && emails.HasElements) Email = emails.Elements().First().Value;
+				if (Email == null) Email = "";
 			}
 			catch (Exception error)
 			{

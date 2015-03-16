@@ -45,6 +45,58 @@ namespace Chaos.Portal.Module.Larmfm.Test.Domain.WayfProfile
 		}
 
 		[Test]
+		public void Constructor_GivenEmptyXml_ShouldHaveEmptyProperties()
+		{
+			var xml = XDocument.Parse("<CHAOS.Profile></CHAOS.Profile>");
+
+			var profile = new Profile(xml);
+
+			Assert.IsEmpty(profile.Email);
+			Assert.IsEmpty(profile.Name);
+			Assert.IsEmpty(profile.Organization);
+			Assert.IsEmpty(profile.Title);
+			Assert.IsEmpty(profile.Country);
+		}
+
+		[Test]
+		public void Constructor_ShouldParseOutFromToXml()
+		{
+			const string email = "Peter@intitut.dk";
+			const string name = "Peter";
+			const string organization = "Institut";
+			const string title = "Walker";
+			const string country = "Denmark";
+
+			var profile1 = new Profile(email, name, organization, title, country);
+			var profile2 = new Profile(profile1.ToXml());
+
+			Assert.AreEqual(email, profile2.Email);
+			Assert.AreEqual(name, profile2.Name);
+			Assert.AreEqual(organization, profile2.Organization);
+			Assert.AreEqual(title, profile2.Title);
+			Assert.AreEqual(country, profile2.Country);
+		}
+
+		[Test]
+		public void Constructor_ShouldParseOutFromToXmlString()
+		{
+			const string email = "Peter@intitut.dk";
+			const string name = "Peter";
+			const string organization = "Institut";
+			const string title = "Walker";
+			const string country = "Denmark";
+
+			var profile1 = new Profile(email, name, organization, title, country);
+			var profile2 = new Profile(XDocument.Parse(profile1.ToXmlString()));
+
+			Assert.AreEqual(email, profile2.Email);
+			Assert.AreEqual(name, profile2.Name);
+			Assert.AreEqual(organization, profile2.Organization);
+			Assert.AreEqual(title, profile2.Title);
+			Assert.AreEqual(country, profile2.Country);
+		}
+
+		[Test]
 		public void Equals_GivenEqualProfiles_ShouldReturnTrue()
 		{
 			const string email = "Peter@intitut.dk";
@@ -121,8 +173,8 @@ namespace Chaos.Portal.Module.Larmfm.Test.Domain.WayfProfile
 			const string existingTitle = "Walker";
 			const string existingCountry = "Denmark";
 
-			const string email = "Peter@intitut.dk";
-			const string title = "Walker";
+			const string email = "Petesdfsdfr@intitut.dk";
+			const string title = "Weep";
 
 			var existingProfile = new Profile(existingEmail, existingName, existingOrganization, existingTitle, existingCountry);
 			var fillingProfile = new Profile(email, null, "", title, "  ");
@@ -134,6 +186,33 @@ namespace Chaos.Portal.Module.Larmfm.Test.Domain.WayfProfile
 			Assert.AreEqual(existingOrganization, existingProfile.Organization);
 			Assert.AreEqual(title, existingProfile.Title);
 			Assert.AreEqual(existingCountry, existingProfile.Country);
+		}
+
+		[Test]
+		public void FillDataFrom_HasEmptyEmail_ShouldNotFillInEmail()
+		{
+			const string existingEmail = "Peter@intitut.dk";
+			const string existingName = "Hans";
+			const string existingOrganization = "Institut";
+			const string existingTitle = "Walker";
+			const string existingCountry = "Denmark";
+
+			const string email = "";
+			const string name = "Peter";
+			const string organization = "Skolen";
+			const string title = "Runner";
+			const string country = "Sverige";
+
+			var existingProfile = new Profile(existingEmail, existingName, existingOrganization, existingTitle, existingCountry);
+			var fillingProfile = new Profile(email, name, organization, title, country);
+
+			existingProfile.FillDataFrom(fillingProfile);
+
+			Assert.AreEqual(existingEmail, existingProfile.Email);
+			Assert.AreEqual(name, existingProfile.Name);
+			Assert.AreEqual(organization, existingProfile.Organization);
+			Assert.AreEqual(title, existingProfile.Title);
+			Assert.AreEqual(country, existingProfile.Country);
 		}
 	}
 }

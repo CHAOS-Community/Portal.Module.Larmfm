@@ -52,7 +52,6 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 			var existingMetadata = userObject.Metadatas == null ? null : userObject.Metadatas.FirstOrDefault(m => m.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
 			var existingProfile = existingMetadata != null ? new Domain.WayfProfile.Profile(existingMetadata.MetadataXml) : null;
 
-
 			if (existingProfile == null || !existingProfile.Equals(newProfile))
 			{
 				var metadataGuid = existingMetadata == null ? Guid.NewGuid() : existingMetadata.Guid;
