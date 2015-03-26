@@ -22,16 +22,6 @@ namespace Chaos.Portal.Module.Larmfm.Test.Helper
         }
 
         [Test]
-        public void Should_Return_0()
-        {
-            var dtFromt = DateTime.Now;
-
-            var dtoTo = DateTime.MinValue;
-
-            Assert.AreEqual(TimeCodeHelper.ConvertToDurationInSec(dtFromt, dtoTo), 0);
-        }
-
-        [Test]
         public void Should_Calc_Ducation_in_Sec()
         {
             var dtFrom = new DateTime(2008, 10, 10, 12, 0, 0);

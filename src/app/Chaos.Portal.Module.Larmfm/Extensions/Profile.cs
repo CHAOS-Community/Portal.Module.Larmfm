@@ -65,7 +65,7 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
       result.Twitter = root.Element("Twitter").Value;
       result.Address = root.Element("Address").Value;
       result.City = root.Element("City").Value;
-      result.ZipCode = root.Element("ZipCode").Value;
+      result.ZipCode = root.Element("ZipCode") == null ? root.Element("Zipcode").Value : root.Element("ZipCode").Value;
       result.Country = root.Element("Country").Value;
       
       return result;

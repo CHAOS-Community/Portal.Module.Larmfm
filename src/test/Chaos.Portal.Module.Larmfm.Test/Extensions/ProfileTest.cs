@@ -80,6 +80,26 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
       Assert.That(result.Country, Is.EqualTo("DK"));
     }
 
+    [Test]
+    public void Get_WithDifferentZipCodeFormat_ReturnProfileResult()
+    {
+      var extension = Make_ProfileExtension();
+      PortalRequest.Setup(p => p.User).Returns(new UserInfo { Guid = new Guid("10000000-0000-0000-0000-000000000001") });
+      McmRepository.Setup(
+        m => m.ObjectGet(new Guid("10000000-0000-0000-0000-000000000001"), true, false, false, false, false))
+                   .Returns(new Object
+                   {
+                     Metadatas = new[]{new Metadata
+                         {
+                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><Phonenumber>(+45) 8888 8888</Phonenumber></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><Zipcode>1234</Zipcode><Country>DK</Country></CHAOS.Profile>")
+                         }}
+                   });
+
+      var result = extension.Get();
+
+      Assert.That(result.ZipCode, Is.EqualTo("1234"));
+    }
+
     [Test, ExpectedException(typeof(InsufficientPermissionsException))]
     public void Set_GivenAnonymousUser_Throw()
     {
