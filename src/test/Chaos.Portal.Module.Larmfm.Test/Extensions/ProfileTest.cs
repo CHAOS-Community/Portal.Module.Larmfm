@@ -91,13 +91,13 @@ namespace Chaos.Portal.Module.Larmfm.Test.Extensions
                    {
                      Metadatas = new[]{new Metadata
                          {
-                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>John Doe</Name><Title>Phd</Title><About>about text</About><Organization>DTU</Organization><Emails><Email>john.doe@dtu.dk</Email></Emails><Phonenumbers><Phonenumber>(+45) 8888 8888</Phonenumber></Phonenumbers><Websites><Website>www.example.com</Website></Websites><Skype>john.dtu.doe</Skype><LinkedIn>link</LinkedIn><Twitter>link</Twitter><Address>street and number</Address><City>city name</City><Zipcode>1234</Zipcode><Country>DK</Country></CHAOS.Profile>")
+                           MetadataXml = XDocument.Parse("<CHAOS.Profile><Name>Janne Nielsen</Name><Title>Ph.d.-studerende</Title><About></About><Organization>Institut for Æstetik og Kommunikation, AU</Organization><Emails><Email>imvjani@hum.au.dk</Email></Emails><Phonenumbers><Phonenumber></Phonenumber></Phonenumbers><Websites><Website></Website></Websites><Skype></Skype><LinkedIn></LinkedIn><Twitter></Twitter><Address></Address><City></City><Zipcode></Zipcode><Country></Country></CHAOS.Profile>")
                          }}
                    });
 
       var result = extension.Get();
 
-      Assert.That(result.ZipCode, Is.EqualTo("1234"));
+      Assert.That(result.ZipCode, Is.EqualTo(""));
     }
 
     [Test, ExpectedException(typeof(InsufficientPermissionsException))]

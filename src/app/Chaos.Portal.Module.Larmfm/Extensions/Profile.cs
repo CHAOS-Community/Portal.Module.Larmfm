@@ -35,11 +35,11 @@ namespace Chaos.Portal.Module.Larmfm.Extensions
 
     private ProfileResult Map(Object user)
     {
-      if (user == null) return ProfileResult.CreateNullObject();
+      if (user == null || user.Metadatas == null) return ProfileResult.CreateNullObject();
 
       var metadata = user.Metadatas.FirstOrDefault(item => item.MetadataSchemaGuid == Settings.UserProfileMetadataSchemaGuid);
 
-      if (metadata == null) return ProfileResult.CreateNullObject();
+      if (metadata == null || metadata.MetadataXml == null) return ProfileResult.CreateNullObject();
 
       var root = metadata.MetadataXml.Root;
 
